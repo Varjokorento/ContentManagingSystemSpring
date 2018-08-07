@@ -39,6 +39,13 @@ public class PostController {
         return "index";
     }
 
+    @GetMapping("/archives")
+    public String archives(Model model) {
+        List<Post> posts = postRepository.findAllByOrderByDateDesc();
+        model.addAttribute("showposts", posts);
+        return "archives";
+    }
+
     @GetMapping("/post")
     public String listposts(Model model) {
         Post post = new Post();
