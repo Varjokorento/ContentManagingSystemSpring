@@ -31,10 +31,17 @@ public class PostController {
 
     @GetMapping("/")
     public String index(Model model) {
-        List<Post> posts = postRepository.findAll();
+        List<Post> posts = postRepository.findAllByOrderByDateDesc();
 
         model.addAttribute("showposts", posts);
         return "index";
+    }
+
+    @GetMapping("/archives")
+    public String archives(Model model) {
+        List<Post> posts = postRepository.findAllByOrderByDateDesc();
+        model.addAttribute("showposts", posts);
+        return "archives";
     }
 
     @GetMapping("/post")
