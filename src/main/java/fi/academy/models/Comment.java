@@ -1,9 +1,12 @@
 package fi.academy.models;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.config.EnableMongoAuditing;
 
-import java.sql.Date;
+import java.util.Date;
 
+@EnableMongoAuditing
 public class Comment {
 
     @Id
@@ -11,11 +14,12 @@ public class Comment {
 
     private String nickname;
     private String comment;
-    private String posted;
+    @CreatedDate
+    private Date posted;
 
     public Comment() {}
 
-    public Comment(String nickname, String comment, String posted) {
+    public Comment(String nickname, String comment, Date posted) {
         this.nickname = nickname;
         this.comment = comment;
         this.posted = posted;
@@ -45,22 +49,20 @@ public class Comment {
         this.comment = comment;
     }
 
-    public String getPosted() {
+    public Date getPosted() {
         return posted;
     }
 
-    public void setPosted(String posted) {
+    public void setPosted(Date posted) {
         this.posted = posted;
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Comment{");
-        sb.append("id='").append(id).append('\'');
-        sb.append(", nickname='").append(nickname).append('\'');
-        sb.append(", comment='").append(comment).append('\'');
-        sb.append(", posted=").append(posted);
-        sb.append('}');
+        final StringBuilder sb = new StringBuilder("Comment:");
+        sb.append("Nickname: ").append(nickname).append('\n');
+        sb.append("Comment: ").append(comment).append('\n');
+        sb.append("Date: ").append(posted);
         return sb.toString();
     }
 }

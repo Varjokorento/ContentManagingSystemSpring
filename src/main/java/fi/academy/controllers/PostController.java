@@ -1,5 +1,6 @@
 package fi.academy.controllers;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import fi.academy.Error.ErrorPost;
 import fi.academy.models.Comment;
 import fi.academy.models.Post;
@@ -17,6 +18,7 @@ import sun.security.util.AuthResources_de;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +36,6 @@ public class PostController {
     @GetMapping("/")
     public String index(Model model) {
         List<Post> posts = postRepository.findAllByOrderByDateDesc();
-
         model.addAttribute("showposts", posts);
         return "index";
     }
@@ -62,13 +63,12 @@ public class PostController {
 
     @PostMapping("/archives")
     public String archivesfindbynames(@ModelAttribute("addpost") @RequestBody Post post) {
-
         Post posti = postRepository.findByTitleLike(post.getTitle());
         List<Post> posts = new ArrayList<>();
         posts.add(posti);
         System.out.println(posts);
         String titteli = post.getTitle();
-        String url = "redirect:/archives/"+ titteli;
+        String url = "redirect:/archives/" + titteli;
         System.out.println(url);
         return url;
     }
@@ -89,24 +89,60 @@ public class PostController {
     @PostMapping("/post/{_id}/comments")
     public String postcomments(@ModelAttribute("addcomment") @RequestBody Comment comment, @PathVariable("_id") String _id) {
         Optional<Post> post = postRepository.findById(_id);
-        if(post.get().getComments() == null) {
+        if (post.get().getComments() == null) {
             post.get().setComments(new ArrayList<>());
         }
         List<Comment> comments = post.get().getComments();
+        comment.setPosted(new Date());
         comments.add(comment);
         post.get().setComments(comments);
         postRepository.save(post.get());
-        return "redirect:/";
+        return "redirect:/post/{_id}";
     }
 
     @GetMapping("/post/{_id}")
     public String findOne(@PathVariable("_id") String _id, Model model) {
         List<Post> optionalPost = postRepository.getPostById(_id);
+        List<Comment> comments = optionalPost.get(0).getComments();
+        String id = optionalPost.get(0).getId();
+        model.addAttribute("postid", id);
         model.addAttribute("showpost", optionalPost);
+        Comment comment = new Comment();
+        model.addAttribute("addcomment", comment);
+        model.addAttribute("showcomments", comments);
+        return "post";
+    }
+
+    @GetMapping("/post/{_id}/edit")
+    public String updatePost(@PathVariable("_id") String _id, Model model) {
+        model.addAttribute("editpost", postRepository.findById(_id).get());
+        return "edit";
+    }
+
+//    @GetMapping("/postfind/{title}")
+//    public String findbyName(@PathVariable("title") String title, Model model) {
+//        Post p = postRepository.findByTitleLike(title);
+//        List<Post> optionalPost = new ArrayList<>();
+//        optionalPost.add(p);
+//        model.addAttribute("showpost", optionalPost);
+//        Comment comment = new Comment();
+//        model.addAttribute("addcomment", comment);
+//        return "post";
+//    }
+
+    @GetMapping("/findpost/{title}")
+    public String postfindbyname(@PathVariable("title") String title, Model model) {
+        Post post = postRepository.findByTitleLike(title);
+        Post posti = new Post();
+        List<Post> posts = new ArrayList<>();
+        posts.add(post);
+        System.out.println(posts);
+        model.addAttribute("showpost", posts);
         Comment comment = new Comment();
         model.addAttribute("addcomment", comment);
         return "post";
     }
+
 
     //TODO Kaikki responseEntityiksi
     @PostMapping("/post")
@@ -116,13 +152,27 @@ public class PostController {
         post.setText(text);
         System.out.println(post.getText());
         postRepository.save(post);
+        System.out.println(post.getDate());
         return "redirect:/";
     }
 
+    @PostMapping("/post/edit")
+    public String updatePost(@ModelAttribute("addpost") @RequestBody Post post) {
+        Optional<Post> newPost = postRepository.findById((post.getId()));
+        newPost.get().setTitle(post.getTitle());
+        newPost.get().setText(post.getText());
+        post.setModifieddate(new Date());
+        System.out.println(post.getDate());
+        postRepository.deleteById(post.getId());
+        postRepository.save(newPost.get());
+        return "redirect:/findpost/" + newPost.get().getTitle();
+    }
+
+
     @GetMapping("/post/delete/{_id}")
     public String deletePost(@PathVariable("_id") String _id) {
-            postRepository.deleteById(_id);
-      return "redirect:/";
+        postRepository.deleteById(_id);
+        return "redirect:/";
     }
 
     @PutMapping("/post/{_id}")

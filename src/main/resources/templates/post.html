@@ -10,8 +10,6 @@
     <link rel="stylesheet" th:href="@{/app.css}"/>
 
 
-
-
 </head>
 <body>
 <div class="grid-container">
@@ -39,26 +37,33 @@
                     <div class="primary callout">
                         <h4 th:text="${posts.title}"></h4>
                         <p th:utext="${posts.text}"></p>
-                        <p th:text="${posts.date}"></p>
-
-                        <div class="callout secondary" id="comments">
-
+                        <p th:utext="${posts.date}"></p>
+                        <p th:text="${posts.modifieddate}"></p>
+                        <!--<div class="callout secondary" id="comments">
                             <p th:utext="${posts.comments}"></p>
-
-                        </div>
-
-
-
-                        <h1>Add Comment</h1>
-                        <form th:action="@{/post/{_id}/comments(_id=${posts.id})}" th:object="${addcomment}" method="POST">
-                            <input type="text" th:field="*{nickname}" placeholder="Nickname">
-                            <input type="text" th:field="*{comment}" placeholder="Comment">
-                            <button class="button large" type="submit">Post</button>
-                        </form>
-
+                        </div>-->
+                        <!-- Kommentit saadaan käytyä läpi, mutta niiden näkyminen Thymeleafissa vielä tökkii johtuen HTML-muotoulusta -->
 
                     </div>
                 </tr>
+
+                <tr th:each="comments :*{showcomments}">
+                    <div class="callout secondary" id="comments">
+                        Posted: <h5 th:text="${comments.posted}"></h5>
+                        Posted by: <h4 th:text="${comments.nickname}"></h4>
+                        Comment: <p th:text="${comments.comment}"></p>
+                    </div>
+
+                </tr>
+
+                <h1>Add Comment</h1>
+                <form th:action="@{/post/{_id}/comments(_id=${postid})}" th:object="${addcomment}"
+                      method="POST">
+                    <input type="text" th:field="*{nickname}" placeholder="Nickname">
+                    <input type="text" th:field="*{comment}" placeholder="Comment">
+                    <button class="button large" type="submit">Post</button>
+                </form>
+
 
             </div>
         </div>

@@ -10,6 +10,8 @@
     <link rel="stylesheet" th:href="@{/app.css}"/>
 
 
+
+
 </head>
 <body>
 <div class="grid-container">
@@ -24,7 +26,7 @@
         <ul class="menu">
             <li><a href="/">Home</a></li>
             <li><a href="/archives">Archives</a></li>
-            <li><a href="/post">Add Post</a></li>
+            <li><a href="#">Add Post</a></li>
         </ul>
 
     </div>
@@ -33,35 +35,13 @@
         <div class="cell medium-8">
             <div class="callout panel" data-equalizer-watch="foo">
 
-                <tr th:each="posts : *{showpost}">
-                    <div class="primary callout">
-                        <h4 th:text="${posts.title}"></h4>
-                        <p th:utext="${posts.text}"></p>
-                        <p th:utext="${posts.date}"></p>
-                        <p th:text="${posts.modifieddate}"></p>
-                        <!--<div class="callout secondary" id="comments">
-                            <p th:utext="${posts.comments}"></p>
-                        </div>-->
-                        <!-- Kommentit saadaan käytyä läpi, mutta niiden näkyminen Thymeleafissa vielä tökkii johtuen HTML-muotoulusta -->
-
-                    </div>
-                </tr>
-
-                <tr th:each="comments :*{showcomments}">
-                    <div class="callout secondary" id="comments">
-                        Posted: <h5 th:text="${comments.posted}"></h5>
-                        Posted by: <h4 th:text="${comments.nickname}"></h4>
-                        Comment: <p th:text="${comments.comment}"></p>
-                    </div>
-
-                </tr>
-
-                <h1>Add Comment</h1>
-                <form th:action="@{/post/{_id}/comments(_id=${postid})}" th:object="${addcomment}"
-                      method="POST">
-                    <input type="text" th:field="*{nickname}" placeholder="Nickname">
-                    <input type="text" th:field="*{comment}" placeholder="Comment">
+                <h1>Add Post</h1>
+                <form th:action="@{/post/edit}" th:object="${editpost}" method="POST">
+                    <input type="text" th:field="*{title}" placeholder="Title">
+                    <textarea rows="7" cols="50" th:field="*{text}" placeholder="Text"></textarea>
                     <button class="button large" type="submit">Post</button>
+                    <input type="hidden" th:field="*{id}"/>
+                    <input type="hidden" th:field="*{date}"/>
                 </form>
 
 

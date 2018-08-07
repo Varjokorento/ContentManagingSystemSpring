@@ -3,6 +3,7 @@ package fi.academy.models;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
@@ -22,8 +23,12 @@ public class Post {
 
     private String title;
     private String text;
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     @CreatedDate
     private Date date;
+
+    @LastModifiedDate
+    private Date modifieddate;
     private List<Comment> comments;
 
     public Post() {}
@@ -32,6 +37,18 @@ public class Post {
         this.title = title;
         this.text = text;
         this.date = date;
+        this.modifieddate = date;
+    }
+
+//    public Post(String title, String text, Date date) {
+//        this.title = title;
+//        this.text = text;
+//        this.date = date;
+//    }
+
+    public Post(String title, String text) {
+        this.title = title;
+        this.text = text;
     }
 
     public Post(String title, String text, Date date, List<Comment> comments) {
@@ -89,6 +106,14 @@ public class Post {
         this.comments = comments;
     }
 
+    public Date getModifieddate() {
+        return modifieddate;
+    }
+
+    public void setModifieddate(Date modifieddate) {
+        this.modifieddate = modifieddate;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Post{");
@@ -96,6 +121,7 @@ public class Post {
         sb.append(", title='").append(title).append('\'');
         sb.append(", text='").append(text).append('\'');
         sb.append(", date=").append(date);
+        sb.append(", modifieddate=").append(modifieddate);
         sb.append(", comments=").append(comments);
         sb.append('}');
         return sb.toString();

@@ -37,10 +37,9 @@
 
                 <tr th:each="post : *{showposts}">
                     <div class="primary callout">
-                        <a th:href="@{/post/{_id}/(_id=${post.id})}"><h4 th:text="${post.title}"></h4></a>
-                        <h6 th:text="${post.date}"></h6>
+                        <a th:href="@{/post/{_id}/(_id=${post.id})}"><h4 th:text="${post.title}"></h4>
+                        <h6 th:text="${#dates.format(post.date, 'dd/MM/yyyy HH:mm')}"></h6>
                         <p th:utext="${post.text}"></p>
-                        <p th:utext="${post.comments}"></p>
                         <a type="button" class="alert button"  th:attr="data-open=${post.id}">Delete post</a>
                     </div>
 
