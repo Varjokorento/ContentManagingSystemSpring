@@ -20,6 +20,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 import java.awt.*;
 import java.lang.reflect.ParameterizedType;
 import java.net.URI;
+import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
@@ -63,7 +64,7 @@ public class PostControllerTest {
     @Test
     public void testIfPostCanBeAdded() {
         // Ei mene läpi Actual   Expected: Expected :is <Post{id='5a', title='Heit', text='Hei', date=Hei}> Actual: <Post{id='5a', title='Heit', text='Hei', date=Hei}>
-        Post p = new Post("5a", "Heit", "Hei", "Hei");
+        Post p = new Post("5a", "Heit", "Hei", new Date());
         ResponseEntity<Post> response = restTemplate.postForEntity(URI.create("http://localhost:8080/post"), p, Post.class);
         assertThat(response.getStatusCode(), (equalTo(HttpStatus.CREATED)));
         String location = response.getHeaders().get("Location").get(0);

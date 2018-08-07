@@ -26,7 +26,7 @@
         <ul class="menu">
             <li><a href="#">Home</a></li>
             <li><a href="#">Archives</a></li>
-            <li><a href="/post">Add Post</a></li>
+            <li><a href="#">Add Post</a></li>
         </ul>
 
     </div>
@@ -35,15 +35,14 @@
         <div class="cell medium-8">
             <div class="callout panel" data-equalizer-watch="foo">
 
-                <tr th:each="post : *{showposts}">
-                    <div class="primary callout">
-                        <a th:href="@{/post/{_id}/(_id=${post.id})}"><h4 th:text="${post.title}"></h4></a>
-                        <h6 th:text="${post.date}"></h6>
-                        <p th:text="${post.text}"></p>
-                        <p th:text="${post.comments}"></p>
-                        <a type="button" class="alert button" th:href="@{/post/delete/{_id}/(_id=${post.id})}">Delete post</a>
-                    </div>
-                </tr>
+                <h1>Add Post</h1>
+                <form th:action="@{/post}" th:object="${addpost}" method="POST">
+                    <input type="text" th:field="*{title}" placeholder="Title">
+                    <input type="text" th:field="*{text}" placeholder="Text">
+                    <button class="button large" type="submit">Post</button>
+                </form>
+
+
 
             </div>
         </div>
@@ -56,10 +55,10 @@
         </div>
     </div>
 
-    </div>
-    <script th:src="@{/vendor/jquery.js}"></script>
-    <script th:src="@{/vendor/what-input.js}"></script>
-    <script th:src="@{/vendor/foundation.js}"></script>
-    <script th:src="@{/app.js}"></script>
+</div>
+<script th:src="@{/vendor/jquery.js}"></script>
+<script th:src="@{/vendor/what-input.js}"></script>
+<script th:src="@{/vendor/foundation.js}"></script>
+<script th:src="@{/app.js}"></script>
 </body>
 </html>

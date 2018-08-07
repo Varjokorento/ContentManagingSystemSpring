@@ -11,11 +11,11 @@ public class Comment {
 
     private String nickname;
     private String comment;
-    private Date posted;
+    private String posted;
 
     public Comment() {}
 
-    public Comment(String nickname, String comment, Date posted) {
+    public Comment(String nickname, String comment, String posted) {
         this.nickname = nickname;
         this.comment = comment;
         this.posted = posted;
@@ -45,11 +45,11 @@ public class Comment {
         this.comment = comment;
     }
 
-    public Date getPosted() {
+    public String getPosted() {
         return posted;
     }
 
-    public void setPosted(Date posted) {
+    public void setPosted(String posted) {
         this.posted = posted;
     }
 

@@ -1,9 +1,12 @@
 package fi.academy.controllers;
 
 import fi.academy.Error.ErrorPost;
+import fi.academy.models.Comment;
 import fi.academy.models.Post;
+import fi.academy.repositories.CommentRepository;
 import fi.academy.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,62 +18,65 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@Controller
+@EnableMongoAuditing
 public class PostController {
 
     @Autowired
     PostRepository postRepository;
 
-   @GetMapping("/post")
-   public List<Post> index() {
-       return postRepository.findAll();
-   }
+    @Autowired
+    CommentRepository commentRepository;
 
-   @GetMapping("/post/{_id}")
-    public ResponseEntity<?> findOne(@PathVariable("_id") String _id) {
-       Optional<Post> optionalPost = postRepository.findById(_id);
-               if(optionalPost.isPresent()) {
-           return ResponseEntity.ok(optionalPost.get());
-               }
-       HttpStatus status = HttpStatus.NOT_FOUND;
-       return ResponseEntity
-               .status(status)
-               .body(new ErrorPost("No post with id" + _id, status.value()));
 
-   }
-   //TODO Kaikki responseEntityiksi
-   @PostMapping("/post")
-    public ResponseEntity<?> createPost(@RequestBody Post post) {
-       postRepository.save(post);
-       String id = post.getId();
-       URI location = UriComponentsBuilder.newInstance()
-               .scheme("http")
-               .host("localhost")
-               .port(8080)
-               .path("/post/{id}")
-               .buildAndExpand(id)
-               .toUri();
-       return ResponseEntity.created(location).build();
-   }
+    @GetMapping("/")
+    public String index(Model model) {
+        List<Post> posts = postRepository.findAll();
 
-   @DeleteMapping("/post/{_id}")
-    public ResponseEntity<?> deletePost(@PathVariable("_id") String _id) {
-       Optional <Post> p = postRepository.findById(_id);
-       if((p.isPresent())) {
-           postRepository.deleteById(_id);
-           return ResponseEntity.notFound().build();
-       } else {
-           return ResponseEntity.notFound().build();
-       }
-   }
+        model.addAttribute("showposts", posts);
+        return "index";
+    }
 
-   @PutMapping("/post/{_id}")
+    @GetMapping("/post")
+    public String listposts(Model model) {
+        Post post = new Post();
+        model.addAttribute("addpost", post);
+        return "addpost";
+    }
+
+    @GetMapping("/post/{_id}/comments")
+    public List<Comment> comments(@PathVariable("_id") String _id) {
+        Optional<Post> optionalPost = postRepository.findById(_id);
+        return commentRepository.findAll();
+    }
+
+    @GetMapping("/post/{_id}")
+    public String findOne(@PathVariable("_id") String _id, Model model) {
+        List<Post> optionalPost = postRepository.getPostById(_id);
+        model.addAttribute("showpost", optionalPost);
+        return "post";
+    }
+
+    //TODO Kaikki responseEntityiksi
+    @PostMapping("/post")
+    public String createPost(@ModelAttribute("addpost") @RequestBody Post post) {
+        postRepository.save(post);
+        return "redirect:/";
+    }
+
+    @GetMapping("/post/delete/{_id}")
+    public String deletePost(@PathVariable("_id") String _id) {
+            postRepository.deleteById(_id);
+      return "redirect:/";
+    }
+
+    @PutMapping("/post/{_id}")
     public ResponseEntity<?> updatePost(@PathVariable String _id, @RequestBody Post post) {
-       Optional<Post> newPost = postRepository.findById(_id);
-       newPost.get().setText(post.getText());
-       newPost.get().setTitle(post.getTitle());
-       postRepository.save(newPost.get());
-       HttpStatus status = HttpStatus.OK;
-       return ResponseEntity.ok(post);
-   }
+        Optional<Post> newPost = postRepository.findById(_id);
+        newPost.get().setText(post.getText());
+        newPost.get().setTitle(post.getTitle());
+        postRepository.save(newPost.get());
+        HttpStatus status = HttpStatus.OK;
+        return ResponseEntity.ok(post);
+    }
 }

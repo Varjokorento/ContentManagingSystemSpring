@@ -1,10 +1,20 @@
 package fi.academy.models;
 
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.config.EnableMongoAuditing;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
+@Document(collection = "posts")
+@EnableMongoAuditing
 public class Post {
 
     @Id
@@ -12,17 +22,27 @@ public class Post {
 
     private String title;
     private String text;
-    private String date;
+    @CreatedDate
+    private Date date;
+    private List<Comment> comments;
 
     public Post() {}
 
-    public Post(String title, String text, String date) {
+    public Post(String title, String text, Date date) {
         this.title = title;
         this.text = text;
         this.date = date;
     }
 
-    public Post(String id, String title, String text, String date) {
+    public Post(String title, String text, Date date, List<Comment> comments) {
+        this.title = title;
+        this.text = text;
+        this.date = date;
+        this.comments = comments;
+    }
+
+
+    public Post(String id, String title, String text, Date date) {
         this.id = id;
         this.title = title;
         this.text = text;
@@ -53,12 +73,20 @@ public class Post {
         this.text = text;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     @Override
@@ -68,6 +96,7 @@ public class Post {
         sb.append(", title='").append(title).append('\'');
         sb.append(", text='").append(text).append('\'');
         sb.append(", date=").append(date);
+        sb.append(", comments=").append(comments);
         sb.append('}');
         return sb.toString();
     }
