@@ -28,7 +28,7 @@ public class UltimatecmsApplication {
     CommandLineRunner ajaohjelma(PostRepository repository) {
         return (args) -> {
 
-            List<Comment> kommentit = new ArrayList<>();
+            /*List<Comment> kommentit = new ArrayList<>();
 
             Comment comment = new Comment("Nickname", "Ihan kiva", "yeh");
 
@@ -36,7 +36,7 @@ public class UltimatecmsApplication {
 
             Post postcomment = new Post("Otsikko", "Testi testi", new java.util.Date(), kommentit);
 
-            repository.save(postcomment);
+            repository.save(postcomment);*/
 
         };
 

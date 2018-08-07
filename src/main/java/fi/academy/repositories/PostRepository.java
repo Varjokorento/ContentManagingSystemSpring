@@ -9,4 +9,7 @@ public interface PostRepository extends MongoRepository<Post, String> {
 
 List<Post> getPostById(String id);
 
+List<Post> findAllByOrderByDateDesc();
+
+
 }

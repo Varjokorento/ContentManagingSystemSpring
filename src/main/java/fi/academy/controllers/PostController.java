@@ -13,8 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+import sun.security.util.AuthResources_de;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +33,7 @@ public class PostController {
 
     @GetMapping("/")
     public String index(Model model) {
-        List<Post> posts = postRepository.findAll();
+        List<Post> posts = postRepository.findAllByOrderByDateDesc();
 
         model.addAttribute("showposts", posts);
         return "index";
@@ -41,6 +43,7 @@ public class PostController {
     public String listposts(Model model) {
         Post post = new Post();
         model.addAttribute("addpost", post);
+
         return "addpost";
     }
 
@@ -50,10 +53,25 @@ public class PostController {
         return commentRepository.findAll();
     }
 
+    @PostMapping("/post/{_id}/comments")
+    public String postcomments(@ModelAttribute("addcomment") @RequestBody Comment comment, @PathVariable("_id") String _id) {
+        Optional<Post> post = postRepository.findById(_id);
+        if(post.get().getComments() == null) {
+            post.get().setComments(new ArrayList<>());
+        }
+        List<Comment> comments = post.get().getComments();
+        comments.add(comment);
+        post.get().setComments(comments);
+        postRepository.save(post.get());
+        return "redirect:/";
+    }
+
     @GetMapping("/post/{_id}")
     public String findOne(@PathVariable("_id") String _id, Model model) {
         List<Post> optionalPost = postRepository.getPostById(_id);
         model.addAttribute("showpost", optionalPost);
+        Comment comment = new Comment();
+        model.addAttribute("addcomment", comment);
         return "post";
     }
 
