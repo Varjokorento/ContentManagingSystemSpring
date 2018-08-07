@@ -41,16 +41,42 @@ public class PostController {
 
     @GetMapping("/archives")
     public String archives(Model model) {
+        Post post = new Post();
         List<Post> posts = postRepository.findAllByOrderByDateDesc();
         model.addAttribute("showposts", posts);
+        model.addAttribute("addpost", post);
         return "archives";
+    }
+
+    @GetMapping("/archives/{title}")
+    public String archivesfindbyname(@PathVariable("title") String title, Model model) {
+        Post post = postRepository.findByTitleLike(title);
+        Post posti = new Post();
+        List<Post> posts = new ArrayList<>();
+        posts.add(post);
+        System.out.println(posts);
+        model.addAttribute("showposts", posts);
+        model.addAttribute("addpost", posti);
+        return "archives";
+    }
+
+    @PostMapping("/archives")
+    public String archivesfindbynames(@ModelAttribute("addpost") @RequestBody Post post) {
+
+        Post posti = postRepository.findByTitleLike(post.getTitle());
+        List<Post> posts = new ArrayList<>();
+        posts.add(posti);
+        System.out.println(posts);
+        String titteli = post.getTitle();
+        String url = "redirect:/archives/"+ titteli;
+        System.out.println(url);
+        return url;
     }
 
     @GetMapping("/post")
     public String listposts(Model model) {
         Post post = new Post();
         model.addAttribute("addpost", post);
-
         return "addpost";
     }
 
@@ -85,6 +111,10 @@ public class PostController {
     //TODO Kaikki responseEntityiksi
     @PostMapping("/post")
     public String createPost(@ModelAttribute("addpost") @RequestBody Post post) {
+        String text = post.getText();
+        text = text.replaceAll("\n", "<br>");
+        post.setText(text);
+        System.out.println(post.getText());
         postRepository.save(post);
         return "redirect:/";
     }

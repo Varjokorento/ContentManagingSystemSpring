@@ -35,7 +35,17 @@
         <div class="cell medium-8">
             <div class="callout panel" data-equalizer-watch="foo">
 
+
+                <form th:action="@{/archives}" th:object="${addpost}" method="POST">
+                    <input type="text" th:field="*{title}" placeholder="Nickname">
+                    <button class="button large" type="submit">Post</button>
+                </form>
+
+
+
                 <tr th:each="post : *{showposts}">
+
+
                     <div class="primary callout">
                         <a th:href="@{/post/{_id}/(_id=${post.id})}"><h4 th:text="${post.title}"></h4></a>
                         <h6 th:text="${post.date}"></h6>

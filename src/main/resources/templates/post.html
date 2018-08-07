@@ -38,9 +38,14 @@
                 <tr th:each="posts : *{showpost}">
                     <div class="primary callout">
                         <h4 th:text="${posts.title}"></h4>
-                        <h6 th:text="${posts.text}"></h6>
+                        <p th:utext="${posts.text}"></p>
                         <p th:text="${posts.date}"></p>
-                        <p th:text="${posts.comments}"></p>
+
+                        <div class="callout secondary" id="comments">
+
+                            <p th:utext="${posts.comments}"></p>
+
+                        </div>
 
 
 
@@ -50,6 +55,7 @@
                             <input type="text" th:field="*{comment}" placeholder="Comment">
                             <button class="button large" type="submit">Post</button>
                         </form>
+
 
                     </div>
                 </tr>

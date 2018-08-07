@@ -39,10 +39,19 @@
                     <div class="primary callout">
                         <a th:href="@{/post/{_id}/(_id=${post.id})}"><h4 th:text="${post.title}"></h4></a>
                         <h6 th:text="${post.date}"></h6>
-                        <p th:text="${post.text}"></p>
-                        <p th:text="${post.comments}"></p>
-                        <a type="button" class="alert button" th:href="@{/post/delete/{_id}/(_id=${post.id})}">Delete post</a>
+                        <p th:utext="${post.text}"></p>
+                        <p th:utext="${post.comments}"></p>
+                        <a type="button" class="alert button"  th:attr="data-open=${post.id}">Delete post</a>
                     </div>
+
+                    <div class="reveal" th:id="${post.id}" data-reveal>
+                        <h1>Are you sure?</h1>
+                        <a type="button" class="alert button" th:href="@{/post/delete/{_id}/(_id=${post.id})}">Delete post</a>
+                        <button class="close-button" data-close aria-label="Close modal" type="button">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
                 </tr>
 
             </div>
