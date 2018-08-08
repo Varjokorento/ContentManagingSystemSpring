@@ -18,7 +18,8 @@
                 <h1>Add Post</h1>
                 <form th:action="@{/post}" th:object="${addpost}" method="POST">
                     <input type="text" th:field="*{title}" placeholder="Title">
-                    <textarea rows="7" cols="50" th:field="*{text}" placeholder="Text"></textarea>
+                    <textarea id="postfield" rows="7" cols="50" th:field="*{text}" placeholder="Text"></textarea>
+                    <br>
                     <button class="button large" type="submit">Post</button>
                 </form>
 

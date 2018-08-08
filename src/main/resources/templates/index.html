@@ -38,6 +38,9 @@
 
                 <div class="reveal" th:id="${post.id}" data-reveal>
                     <h1>Are you sure?</h1>
+                    <p>Write 'delete' to textbox if you are.</p>
+                    
+
                     <a type="button" class="alert button" th:href="@{/post/delete/{_id}/(_id=${post.id})}">Delete
                         post</a>
                     <button class="close-button" data-close aria-label="Close modal" type="button">
