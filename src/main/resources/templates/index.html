@@ -19,8 +19,8 @@
             <tr th:each="post : *{showposts}">
                 <div class="primary callout" id="posts">
                     <a th:href="@{/post/{_id}/(_id=${post.id})}"><h4 th:text="${post.title}"></h4></a>
-                    <h6 th:text="${#dates.format(post.date, 'dd/MM/yyyy HH:mm')}"></h6>
-                    <p th:utext="${post.text}"></p>
+                    <p style="padding: 0;" th:text="${#dates.format(post.date, 'dd/MM/yyyy HH:mm')}"></p>
+                    <p style="font-size: 15px;" th:utext="${post.text}"></p>
 
                     <!--Edit / Delete button group-->
 
@@ -51,9 +51,11 @@
             </tr>
 
         </div>
+
     </div>
 
     <div th:replace="/fragments/popularpost :: popularposts"></div>
+
 
     <th th:replace="/fragments/footer :: footer"></th>
 

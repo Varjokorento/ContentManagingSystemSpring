@@ -25,6 +25,7 @@ public class Post {
 
     private String title;
     private String text;
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     @LastModifiedDate
     private Date modifieddate;
     private String modifiedDatetoDisplay;

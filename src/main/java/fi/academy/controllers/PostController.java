@@ -7,6 +7,7 @@ import fi.academy.repositories.CommentRepository;
 import fi.academy.repositories.PostRepository;
 import fi.academy.repositories.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -35,7 +37,7 @@ public class PostController {
     @GetMapping("/")
     public String index(Model model) {
         List<Post> posts = postRepository.findAllByOrderByDateDesc();
-        List<Post> popularposts = postRepository.findAllByOrderByClickedDesc();
+        List<Post> popularposts = postRepository.findAllByOrderByClickedDesc(new PageRequest(0, 5));
         model.addAttribute("showposts", posts);
         model.addAttribute("popularposts", popularposts);
         model.addAttribute("alltags", findUniqueTags());
@@ -46,7 +48,7 @@ public class PostController {
     public String archives(Model model) {
         Post post = new Post();
         List<Post> posts = postRepository.findAllByOrderByDateDesc();
-        List<Post> popularposts = postRepository.findAllByOrderByClickedDesc();
+        List<Post> popularposts = postRepository.findAllByOrderByClickedDesc(new PageRequest(0, 5));
         model.addAttribute("showposts", posts);
         model.addAttribute("addpost", post);
         model.addAttribute("popularposts", popularposts);
@@ -105,7 +107,7 @@ public class PostController {
             }
         }
         System.out.println(postit);
-        List<Post> popularposts = postRepository.findAllByOrderByClickedDesc();
+        List<Post> popularposts = postRepository.findAllByOrderByClickedDesc(new PageRequest(0, 5));
         model.addAttribute("showposts", postit);
         model.addAttribute("addpost", post);
         model.addAttribute("popularposts", popularposts);
@@ -117,7 +119,7 @@ public class PostController {
     @GetMapping("/post")
     public String listposts(Model model) {
         Post post = new Post();
-        List<Post> popularposts = postRepository.findAllByOrderByClickedDesc();
+        List<Post> popularposts = postRepository.findAllByOrderByClickedDesc(new PageRequest(0, 5));
         model.addAttribute("addpost", post);
         model.addAttribute("popularposts", popularposts);
         return "addpost";
@@ -146,7 +148,7 @@ public class PostController {
     @GetMapping("/post/{_id}")
     public String findOne(@PathVariable("_id") String _id, Model model) {
         List<Post> optionalPost = postRepository.getPostById(_id);
-        List<Post> popularposts = postRepository.findAllByOrderByClickedDesc();
+        List<Post> popularposts = postRepository.findAllByOrderByClickedDesc(new PageRequest(0, 5));
         optionalPost.get(0).addClicks();
         postRepository.save(optionalPost.get(0));
         List<Comment> comments = optionalPost.get(0).getComments();
@@ -163,7 +165,7 @@ public class PostController {
 
     @GetMapping("/post/{_id}/edit")
     public String updatePost(@PathVariable("_id") String _id, Model model) {
-        List<Post> popularposts = postRepository.findAllByOrderByClickedDesc();
+        List<Post> popularposts = postRepository.findAllByOrderByClickedDesc(new PageRequest(0, 5));
         model.addAttribute("popularposts", popularposts);
         model.addAttribute("editpost", postRepository.findById(_id).get());
         return "edit";
@@ -221,14 +223,13 @@ public class PostController {
         return "redirect:/";
     }
 
-
-
     @PostMapping("/post/edit")
     public String updatePost(@ModelAttribute("addpost") @RequestBody Post post) {
         Optional<Post> newPost = postRepository.findById((post.getId()));
         newPost.get().setTitle(post.getTitle());
         newPost.get().setText(post.getText());
-        newPost.get().setModifiedDatetoDisplay(new Date().toString());
+        SimpleDateFormat modified = new SimpleDateFormat("dd-MM-yyyy");
+        newPost.get().setModifiedDatetoDisplay(modified.format(new Date().toString()));
         postRepository.deleteById(post.getId());
         postRepository.save(newPost.get());
         return "redirect:/findpost/" + newPost.get().getTitle();

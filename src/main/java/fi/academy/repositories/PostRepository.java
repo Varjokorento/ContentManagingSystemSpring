@@ -1,7 +1,9 @@
 package fi.academy.repositories;
 
 import fi.academy.models.Post;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
 
@@ -13,7 +15,7 @@ List<Post> findAllByOrderByDateDesc();
 
 Post findByTitleLike(String title);
 
-List<Post> findAllByOrderByClickedDesc();
+List<Post> findAllByOrderByClickedDesc(Pageable pageSize);
 
 List<Post> findByTagitContaining(String tagi);
 List<Post> findByTagsContaining(String tagit);
