@@ -15,5 +15,7 @@ Post findByTitleLike(String title);
 
 List<Post> findAllByOrderByClickedDesc();
 
+List<Post> findByTagitContaining(String tagi);
+List<Post> findByTagsContaining(String tagit);
 
 }

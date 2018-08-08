@@ -33,6 +33,8 @@ public class Post {
     @CreatedDate
     private Date date;
     private List<Comment> comments;
+    private String tags;
+    private List<String> tagit;
 
     public Post() {}
 
@@ -136,6 +138,14 @@ public class Post {
         this.modifiedDatetoDisplay = modifiedDatetoDisplay;
     }
 
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Post{");
@@ -150,6 +160,13 @@ public class Post {
         return sb.toString();
     }
 
+    public List<String> getTagit() {
+        return tagit;
+    }
+
+    public void setTagit(List<String> tagit) {
+        this.tagit = tagit;
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -19,7 +19,7 @@
                 <form th:action="@{/post}" th:object="${addpost}" method="POST">
                     <input type="text" th:field="*{title}" placeholder="Title">
                     <textarea id="postfield" rows="7" cols="50" th:field="*{text}" placeholder="Text"></textarea>
-                    <br>
+                    <input type="text" th:field="*{tags}" placeholder="Tags are separated with a /">
                     <button class="button large" type="submit">Post</button>
                 </form>
 

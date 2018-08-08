@@ -1,10 +1,11 @@
 package fi.academy.controllers;
 
-import fi.academy.Error.ErrorPost;
 import fi.academy.models.Comment;
 import fi.academy.models.Post;
+import fi.academy.models.Tag;
 import fi.academy.repositories.CommentRepository;
 import fi.academy.repositories.PostRepository;
+import fi.academy.repositories.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.http.HttpStatus;
@@ -12,14 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @EnableMongoAuditing
@@ -32,12 +28,17 @@ public class PostController {
     CommentRepository commentRepository;
 
 
+    @Autowired
+    TagRepository tagRepository;
+
+
     @GetMapping("/")
     public String index(Model model) {
         List<Post> posts = postRepository.findAllByOrderByDateDesc();
         List<Post> popularposts = postRepository.findAllByOrderByClickedDesc();
         model.addAttribute("showposts", posts);
         model.addAttribute("popularposts", popularposts);
+        model.addAttribute("alltags", findUniqueTags());
         return "index";
     }
 
@@ -64,6 +65,17 @@ public class PostController {
         return "archives";
     }
 
+    @GetMapping("/archives/tag/{tag}")
+    public String archivesfindbyTag(@PathVariable("tag") String tag, Model model) {
+        List posts = postRepository.findByTagitContaining(tag);
+        Post posti = new Post();
+        System.out.println(posts);
+        model.addAttribute("showposts", posts);
+        model.addAttribute("addpost", posti);
+        return "archives";
+    }
+
+
     @PostMapping("/archives")
     public String archivesfindbynames(@ModelAttribute("addpost") @RequestBody Post post) {
         Post posti = postRepository.findByTitleLike(post.getTitle());
@@ -75,6 +87,32 @@ public class PostController {
         System.out.println(url);
         return url;
     }
+
+
+    @PostMapping("/archives/tags")
+    public String archivesfindbyTags(@ModelAttribute("addpost") @RequestBody Post post, Model model) {
+        String[] searchParameters = post.getTitle().split("/");
+        List postit = new ArrayList();
+        List <List> superList = new ArrayList<>();
+        for (int i = 0; i < searchParameters.length; i++ ){
+            superList.add(postRepository.findByTagsContaining(searchParameters[i]));
+        }
+        for(int i = 0; i < superList.size(); i++ ){
+            for(int a = 0; a < superList.get(i).size(); a++) {
+                if(!(postit.contains(superList.get(i).get(a)))) {
+                    postit.add(superList.get(i).get(a));
+                }
+            }
+        }
+        System.out.println(postit);
+        List<Post> popularposts = postRepository.findAllByOrderByClickedDesc();
+        model.addAttribute("showposts", postit);
+        model.addAttribute("addpost", post);
+        model.addAttribute("popularposts", popularposts);
+        return "archives";
+    }
+
+
 
     @GetMapping("/post")
     public String listposts(Model model) {
@@ -162,15 +200,28 @@ public class PostController {
         String text = post.getText();
         text = text.replaceAll("\n", "<br>");
         post.setText(text);
+        post.setTags(post.getTags());
         post.setTitle(post.getTitle());
         post.setDate(new Date());
         post.setModifiedDatetoDisplay(post.getDate().toString());
         List<Comment> kommentit = new ArrayList<>();
+        String[] splitattu = post.getTags().split("/");
+        List <String> splitted = Arrays.asList(splitattu);
+        post.setTagit(splitted);
+
+        for( int i =0; i< splitted.size(); i++) {
+            Tag t = new Tag();
+            t.setTag(splitted.get(i));
+            tagRepository.save(t);
+        }
+
         post.setComments(kommentit);
         post.setClicked(0);
         postRepository.save(post);
         return "redirect:/";
     }
+
+
 
     @PostMapping("/post/edit")
     public String updatePost(@ModelAttribute("addpost") @RequestBody Post post) {
@@ -198,5 +249,19 @@ public class PostController {
         postRepository.save(newPost.get());
         HttpStatus status = HttpStatus.OK;
         return ResponseEntity.ok(post);
+    }
+
+    public List<Tag> findUniqueTags() {
+        List<Tag> tags = tagRepository.findAll();
+        ArrayList<Tag> uniqueTags = new ArrayList<>();
+        ArrayList<String> uniqueTagNames = new ArrayList<>();
+        for(int i= 0; i < tags.size();i++) {
+            if(!(uniqueTagNames.contains(tags.get(i).getTag()))) {
+                uniqueTags.add(tags.get(i));
+                uniqueTagNames.add(tags.get(i).getTag());
+            } else {
+            }
+        }
+        return uniqueTags;
     }
 }

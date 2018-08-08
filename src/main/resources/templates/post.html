@@ -19,6 +19,9 @@
                     <p th:utext="${#dates.format(posts.date, 'dd/MM/yyyy HH:mm')}"></p>
                     <p th:utext="${posts.text}"></p>
                     <p th:utext="${posts.modifiedDatetoDisplay}"></p>
+                    <ul th:each="tag : ${posts.tagit}">
+                    <li th:text="${tag}"></li>
+                    </ul>
 
                 </div>
             </tr>

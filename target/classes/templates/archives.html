@@ -19,6 +19,11 @@
                 <button class="button large" type="submit">Post</button>
             </form>
 
+            <form th:action="@{/archives/tags}" th:object="${addpost}" method="POST">
+                <input type="text" th:field="*{title}" placeholder="Nickname">
+                <button class="button large" type="submit">Post</button>
+            </form>
+
 
             <tr th:each="post : *{showposts}">
 
