@@ -52,23 +52,6 @@
 
         </div>
 
-        <div id="data-container"></div>
-        <div id="pagination-container"></div>
-
-        <script>
-
-            $('#pagination-container').pagination({
-                dataSource: [post],
-            callback: function(data, pagination){
-                // template method of yourself
-                var html = template(data);
-                dataContainer.html(html);
-            }
-            })
-
-        </script>
-
-
     </div>
 
     <div th:replace="/fragments/popularpost :: popularposts"></div>

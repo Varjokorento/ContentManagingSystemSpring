@@ -2,7 +2,9 @@ package fi.academy;
 
 import fi.academy.models.Comment;
 import fi.academy.models.Post;
+import fi.academy.models.Role;
 import fi.academy.repositories.PostRepository;
+import fi.academy.repositories.RoleRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,19 +27,21 @@ public class UltimatecmsApplication {
 
 
     @Bean
-    CommandLineRunner ajaohjelma(PostRepository repository) {
+    CommandLineRunner init(RoleRepository roleRepository) {
+        roleRepository.deleteAll();
         return (args) -> {
-
-            /*List<Comment> kommentit = new ArrayList<>();
-
-            Comment comment = new Comment("Nickname", "Ihan kiva", "yeh");
-
-            kommentit.add(comment);
-
-            Post postcomment = new Post("Otsikko", "Testi testi", new java.util.Date(), kommentit);
-
-            repository.save(postcomment);*/
-
+           Role adminRole = roleRepository.findByRole("ADMIN");
+           if(adminRole == null) {
+               Role newAdminRole = new Role();
+               newAdminRole.setRole("ADMIN");
+               roleRepository.save(newAdminRole);
+           }
+           Role useRole = roleRepository.findByRole("USER");
+           if(useRole == null) {
+               Role newUserRole = new Role();
+               newUserRole.setRole("User");
+               roleRepository.save(newUserRole);
+           }
         };
 
     }
