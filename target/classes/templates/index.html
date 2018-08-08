@@ -2,7 +2,52 @@
 <html class="no-js" lang="en" dir="ltr" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="/fragments/template :: head">
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ultimate CMS</title>
+<link rel="stylesheet" th:href="@{/foundation.css}"/>
+<link rel="stylesheet" th:href="@{/app.css}"/>
+<link href="https://fonts.googleapis.com/css?family=Montserrat|Roboto:900|Poppins" rel="stylesheet">
+<script src='https://cloud.tinymce.com/stable/tinymce.min.js'></script>
+
+<!--    Post editor and file upload codes-->
+
+<script>
+
+    tinymce.init({
+        selector: '#postfield',
+        plugins: 'code, image',
+        menubar: false,
+        file_picker_types: 'file image media',
+        image_title: true,
+        automatic_uploads: true,
+        file_picker_types: 'image',
+        file_picker_callback: function (cb, value, meta) {
+            var input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('accept', 'image/*');
+            input.onchange = function () {
+                var file = this.files[0];
+                var reader = new FileReader();
+                reader.onload = function () {
+                    var id = 'blobid' + (new Date()).getTime();
+                    var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+                    var base64 = reader.result.split(',')[1];
+                    var blobInfo = blobCache.create(id, file, base64);
+                    blobCache.add(blobInfo);
+                    cb(blobInfo.blobUri(), {title: file.name});
+                };
+                reader.readAsDataURL(file);
+            };
+
+            input.click();
+        }
+    });
+
+</script>
+
+<!--End of post editor and file upload code-->
 
 
 </head>
@@ -37,13 +82,7 @@
                 <!--Confirmation window for delete post-->
 
                 <div class="reveal" th:id="${post.id}" data-reveal>
-<<<<<<< HEAD
                     <h4>Are you sure?</h4>
-=======
-                    <h1>Are you sure?</h1>
-                    <p>Write 'delete' to textbox if you are.</p>
-                    
->>>>>>> origin/cms_with_viewengine
 
                     <a type="button" class="alert button" th:href="@{/post/delete/{_id}/(_id=${post.id})}">Delete
                         post</a>
