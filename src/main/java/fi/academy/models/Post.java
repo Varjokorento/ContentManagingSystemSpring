@@ -27,50 +27,50 @@ public class Post {
     private String text;
     @LastModifiedDate
     private Date modifieddate;
-    private Integer clicked;
+    private String modifiedDatetoDisplay;
+    private int clicked = 0;
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     @CreatedDate
     private Date date;
-
     private List<Comment> comments;
 
     public Post() {}
-
-    public Post(String title, String text, Date date) {
-        this.title = title;
-        this.text = text;
-        this.date = date;
-        this.clicked = 0;
-    }
 
 //    public Post(String title, String text, Date date) {
 //        this.title = title;
 //        this.text = text;
 //        this.date = date;
+//        this.clicked = 0;
 //    }
-
-
-
-
-    public Post(String title, String text) {
-        this.title = title;
-        this.text = text;
-    }
-
-    public Post(String title, String text, Date date, List<Comment> comments) {
-        this.title = title;
-        this.text = text;
-        this.date = date;
-        this.comments = comments;
-    }
-
-
-    public Post(String id, String title, String text, Date date) {
-        this.id = id;
-        this.title = title;
-        this.text = text;
-        this.date = date;
-    }
+//
+////    public Post(String title, String text, Date date) {
+////        this.title = title;
+////        this.text = text;
+////        this.date = date;
+////    }
+//
+//
+//
+//
+//    public Post(String title, String text) {
+//        this.title = title;
+//        this.text = text;
+//    }
+//
+//    public Post(String title, String text, Date date, List<Comment> comments) {
+//        this.title = title;
+//        this.text = text;
+//        this.date = date;
+//        this.comments = comments;
+//    }
+//
+//
+//    public Post(String id, String title, String text, Date date) {
+//        this.id = id;
+//        this.title = title;
+//        this.text = text;
+//        this.date = date;
+//    }
 
     public String getId() {
         return id;
@@ -126,6 +126,14 @@ public class Post {
 
     public void setClicked(int clicked) {
         this.clicked = clicked;
+    }
+
+    public String getModifiedDatetoDisplay() {
+        return modifiedDatetoDisplay;
+    }
+
+    public void setModifiedDatetoDisplay(String modifiedDatetoDisplay) {
+        this.modifiedDatetoDisplay = modifiedDatetoDisplay;
     }
 
     @Override

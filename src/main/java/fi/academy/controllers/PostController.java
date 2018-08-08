@@ -1,6 +1,5 @@
 package fi.academy.controllers;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import fi.academy.Error.ErrorPost;
 import fi.academy.models.Comment;
 import fi.academy.models.Post;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-import sun.security.util.AuthResources_de;
+
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -114,6 +113,7 @@ public class PostController {
         postRepository.save(optionalPost.get(0));
         List<Comment> comments = optionalPost.get(0).getComments();
         String id = optionalPost.get(0).getId();
+        System.out.println(optionalPost.get(0).getClicked());
         model.addAttribute("postid", id);
         model.addAttribute("showpost", optionalPost);
         model.addAttribute("popularposts", popularposts);
@@ -162,9 +162,13 @@ public class PostController {
         String text = post.getText();
         text = text.replaceAll("\n", "<br>");
         post.setText(text);
-        System.out.println(post.getText());
+        post.setTitle(post.getTitle());
+        post.setDate(new Date());
+        post.setModifiedDatetoDisplay(post.getDate().toString());
+        List<Comment> kommentit = new ArrayList<>();
+        post.setComments(kommentit);
+        post.setClicked(0);
         postRepository.save(post);
-        System.out.println(post.getDate());
         return "redirect:/";
     }
 
@@ -173,8 +177,7 @@ public class PostController {
         Optional<Post> newPost = postRepository.findById((post.getId()));
         newPost.get().setTitle(post.getTitle());
         newPost.get().setText(post.getText());
-        System.out.println(post.getDate());
-        System.out.println(post.getModifieddate());
+        newPost.get().setModifiedDatetoDisplay(new Date().toString());
         postRepository.deleteById(post.getId());
         postRepository.save(newPost.get());
         return "redirect:/findpost/" + newPost.get().getTitle();

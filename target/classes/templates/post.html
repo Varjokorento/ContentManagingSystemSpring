@@ -18,11 +18,7 @@
                     <h4 th:text="${posts.title}"></h4>
                     <p th:utext="${#dates.format(posts.date, 'dd/MM/yyyy HH:mm')}"></p>
                     <p th:utext="${posts.text}"></p>
-                    <!--<p th:utext="${posts.modifieddate}"></p>-->
-                    <!--<div class="callout secondary" id="comments">
-                        <p th:utext="${posts.comments}"></p>
-                    </div>-->
-                    <!-- Kommentit saadaan käytyä läpi, mutta niiden näkyminen Thymeleafissa vielä tökkii johtuen HTML-muotoulusta -->
+                    <p th:utext="${posts.modifiedDatetoDisplay}"></p>
 
                 </div>
             </tr>
