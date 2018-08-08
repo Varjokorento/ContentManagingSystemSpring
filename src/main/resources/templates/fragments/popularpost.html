@@ -8,6 +8,10 @@
         <tr th:each="post : *{popularposts}">
             <a th:href="@{/post/{_id}/(_id=${post.id})}"><h6 th:text="${post.title}"></h6></a>
         </tr>
+        <h4>All tags</h4>
+        <tr th:each="tag : *{alltags}">
+            <a th:href="@{/archives/tag/{tag}/(tag=${tag.tag})}"><h6 th:text="${tag.tag}"></h6></a>
+        </tr>
 
     </div>
 </div>
