@@ -10,5 +10,7 @@ public interface TagRepository extends MongoRepository <Tag, String> {
 
     List<Tag> findDistinctByTagContaining(String jotain);
     List<Tag> findAllDistinctTagByTag();
+    List<Tag> findByTag(String tag);
+    Long deleteFirstTagByTag(String tag);
 
 }

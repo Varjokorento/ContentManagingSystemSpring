@@ -51,6 +51,7 @@ public class PostController {
         List<Post> popularposts = postRepository.findAllByOrderByClickedDesc(new PageRequest(0, 5));
         model.addAttribute("showposts", posts);
         model.addAttribute("addpost", post);
+        model.addAttribute("alltags", findUniqueTags());
         model.addAttribute("popularposts", popularposts);
         return "archives";
     }
@@ -110,6 +111,7 @@ public class PostController {
         List<Post> popularposts = postRepository.findAllByOrderByClickedDesc(new PageRequest(0, 5));
         model.addAttribute("showposts", postit);
         model.addAttribute("addpost", post);
+        model.addAttribute("alltags", findUniqueTags());
         model.addAttribute("popularposts", popularposts);
         return "archives";
     }
@@ -121,6 +123,7 @@ public class PostController {
         Post post = new Post();
         List<Post> popularposts = postRepository.findAllByOrderByClickedDesc(new PageRequest(0, 5));
         model.addAttribute("addpost", post);
+        model.addAttribute("alltags", findUniqueTags());
         model.addAttribute("popularposts", popularposts);
         return "addpost";
     }
@@ -157,6 +160,7 @@ public class PostController {
         model.addAttribute("postid", id);
         model.addAttribute("showpost", optionalPost);
         model.addAttribute("popularposts", popularposts);
+        model.addAttribute("alltags", findUniqueTags());
         Comment comment = new Comment();
         model.addAttribute("addcomment", comment);
         model.addAttribute("showcomments", comments);
@@ -167,20 +171,10 @@ public class PostController {
     public String updatePost(@PathVariable("_id") String _id, Model model) {
         List<Post> popularposts = postRepository.findAllByOrderByClickedDesc(new PageRequest(0, 5));
         model.addAttribute("popularposts", popularposts);
+        model.addAttribute("alltags", findUniqueTags());
         model.addAttribute("editpost", postRepository.findById(_id).get());
         return "edit";
     }
-
-//    @GetMapping("/postfind/{title}")
-//    public String findbyName(@PathVariable("title") String title, Model model) {
-//        Post p = postRepository.findByTitleLike(title);
-//        List<Post> optionalPost = new ArrayList<>();
-//        optionalPost.add(p);
-//        model.addAttribute("showpost", optionalPost);
-//        Comment comment = new Comment();
-//        model.addAttribute("addcomment", comment);
-//        return "post";
-//    }
 
     @GetMapping("/findpost/{title}")
     public String postfindbyname(@PathVariable("title") String title, Model model) {
@@ -238,6 +232,8 @@ public class PostController {
 
     @GetMapping("/post/delete/{_id}")
     public String deletePost(@PathVariable("_id") String _id) {
+        Optional<Post> post = postRepository.findById(_id);
+        Tag.deleteTags(post, tagRepository);
         postRepository.deleteById(_id);
         return "redirect:/";
     }

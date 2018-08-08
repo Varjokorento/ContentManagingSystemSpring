@@ -1,6 +1,9 @@
+
+
+
 <!doctype html>
 <html class="no-js" lang="en" dir="ltr" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="http://www.w3.org/1999/xhtml">>
 
 <head th:replace="/fragments/template :: head">
 
@@ -24,7 +27,7 @@
 
                     <!--Edit / Delete button group-->
 
-                    <div class="tiny button-group" style="float: right;">
+                    <div sec:authorize="hasAuthority('ADMIN')" class="tiny button-group" style="float: right;">
                         <a type="button" class="button tiny" th:href="@{/post/{_id}/edit/(_id=${post.id})}">Edit</a>
                         <a type="button" class="alert button tiny" th:attr="data-open=${post.id}">Delete Post</a>
 

@@ -39,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/","/login").access("hasAnyAuthority('ADMIN', 'USER' )").anyRequest().permitAll()
+                .antMatchers("/post", "/login").access("hasAnyAuthority('ADMIN', 'USER' )").anyRequest().permitAll()
                 .and().formLogin().loginPage("/login").failureUrl("/error").usernameParameter("username").passwordParameter("password").defaultSuccessUrl("/")
                 .permitAll().and().logout().permitAll();
         http.exceptionHandling().accessDeniedPage("/login");

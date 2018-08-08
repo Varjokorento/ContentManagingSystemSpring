@@ -15,13 +15,13 @@
 
 
             <form th:action="@{/archives}" th:object="${addpost}" method="POST">
-                <input type="text" th:field="*{title}" placeholder="Nickname">
-                <button class="button large" type="submit">Post</button>
+                <input type="text" th:field="*{title}" placeholder="Search by Name">
+                <button class="button large" type="submit">Search by Name</button>
             </form>
 
             <form th:action="@{/archives/tags}" th:object="${addpost}" method="POST">
-                <input type="text" th:field="*{title}" placeholder="Nickname">
-                <button class="button large" type="submit">Post</button>
+                <input type="text" th:field="*{title}" placeholder="Search by Tags. Separate tags by /">
+                <button class="button large" type="submit">Search by Tag</button>
             </form>
 
 

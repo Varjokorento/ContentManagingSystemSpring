@@ -41,7 +41,7 @@
                 </div>
 
             </tr>
-
+<div sec:authorize="hasAnyAuthority('ADMIN', 'User')">
             <h1>Add Comment</h1>
             <form th:action="@{/post/{_id}/comments(_id=${postid})}" th:object="${addcomment}"
                   method="POST">
@@ -50,7 +50,7 @@
                 <button class="button large" type="submit">Post</button>
             </form>
 
-
+</div>
         </div>
     </div>
 
