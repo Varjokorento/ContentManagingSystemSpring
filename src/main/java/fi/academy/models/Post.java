@@ -1,11 +1,13 @@
 package fi.academy.models;
 
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -23,12 +25,13 @@ public class Post {
 
     private String title;
     private String text;
+    @LastModifiedDate
+    private Date modifieddate;
+    private Integer clicked;
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     @CreatedDate
     private Date date;
 
-    @LastModifiedDate
-    private Date modifieddate;
     private List<Comment> comments;
 
     public Post() {}
@@ -37,7 +40,7 @@ public class Post {
         this.title = title;
         this.text = text;
         this.date = date;
-        this.modifieddate = date;
+        this.clicked = 0;
     }
 
 //    public Post(String title, String text, Date date) {
@@ -45,6 +48,9 @@ public class Post {
 //        this.text = text;
 //        this.date = date;
 //    }
+
+
+
 
     public Post(String title, String text) {
         this.title = title;
@@ -114,14 +120,23 @@ public class Post {
         this.modifieddate = modifieddate;
     }
 
+    public int getClicked() {
+        return clicked;
+    }
+
+    public void setClicked(int clicked) {
+        this.clicked = clicked;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Post{");
         sb.append("id='").append(id).append('\'');
         sb.append(", title='").append(title).append('\'');
         sb.append(", text='").append(text).append('\'');
-        sb.append(", date=").append(date);
         sb.append(", modifieddate=").append(modifieddate);
+        sb.append(", clicked=").append(clicked);
+        sb.append(", date=").append(date);
         sb.append(", comments=").append(comments);
         sb.append('}');
         return sb.toString();
@@ -143,5 +158,9 @@ public class Post {
     public int hashCode() {
 
         return Objects.hash(id, title, text, date);
+    }
+
+    public void addClicks() {
+        clicked++;
     }
 }

@@ -1,73 +1,60 @@
 <!doctype html>
 <html class="no-js" lang="en" dir="ltr" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Foundation for Sites</title>
-    <link rel="stylesheet" th:href="@{/foundation.css}"/>
-    <link rel="stylesheet" th:href="@{/app.css}"/>
 
-
+<head th:replace="/fragments/template :: head">
 
 
 </head>
 <body>
-<div class="grid-container">
-    <div class="grid-x grid-padding-x">
-        <div class="large-12 cell">
-            <h1>Ultimate CMS</h1>
-        </div>
-    </div>
 
-    <div class="row" id="navigation">
+<div th:replace="/fragments/template :: navigation"></div>
 
-        <ul class="menu">
-            <li><a href="/">Home</a></li>
-            <li><a href="/archives">Archives</a></li>
-            <li><a href="/post">Add Post</a></li>
-        </ul>
+<div class="grid-x" data-equalizer="foo">
+    <div class="cell medium-8">
+        <div class="callout panel" data-equalizer-watch="foo">
 
-    </div>
+            <!--Get five posts to page (Latest first)-->
 
-    <div class="grid-x" data-equalizer="foo">
-        <div class="cell medium-8">
-            <div class="callout panel" data-equalizer-watch="foo">
+            <tr th:each="post : *{showposts}">
+                <div class="primary callout" id="posts">
+                    <a th:href="@{/post/{_id}/(_id=${post.id})}"><h4 th:text="${post.title}"></h4></a>
+                    <h6 th:text="${#dates.format(post.date, 'dd/MM/yyyy HH:mm')}"></h6>
+                    <p th:utext="${post.text}"></p>
 
-                <tr th:each="post : *{showposts}">
-                    <div class="primary callout">
-                        <a th:href="@{/post/{_id}/(_id=${post.id})}"><h4 th:text="${post.title}"></h4>
-                        <h6 th:text="${#dates.format(post.date, 'dd/MM/yyyy HH:mm')}"></h6>
-                        <p th:utext="${post.text}"></p>
-                        <a type="button" class="alert button"  th:attr="data-open=${post.id}">Delete post</a>
+                    <!--Edit / Delete button group-->
+
+                    <div class="tiny button-group" style="float: right;">
+                        <a type="button" class="button tiny" th:href="@{/post/{_id}/edit/(_id=${post.id})}">Edit</a>
+                        <a type="button" class="alert button tiny" th:attr="data-open=${post.id}">Delete Post</a>
+
                     </div>
 
-                    <div class="reveal" th:id="${post.id}" data-reveal>
-                        <h1>Are you sure?</h1>
-                        <a type="button" class="alert button" th:href="@{/post/delete/{_id}/(_id=${post.id})}">Delete post</a>
-                        <button class="close-button" data-close aria-label="Close modal" type="button">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
+                    <!--End of button group-->
 
-                </tr>
+                </div>
 
-            </div>
-        </div>
-        <div class="cell medium-4">
-            <div class="callout" data-equalizer-watch="foo">
+                <!--Confirmation window for delete post-->
 
-                Heissulivei
+                <div class="reveal" th:id="${post.id}" data-reveal>
+                    <h1>Are you sure?</h1>
+                    <a type="button" class="alert button" th:href="@{/post/delete/{_id}/(_id=${post.id})}">Delete
+                        post</a>
+                    <button class="close-button" data-close aria-label="Close modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
 
-            </div>
+                <!--End of confirmation windows-->
+
+            </tr>
+
         </div>
     </div>
 
-    </div>
-    <script th:src="@{/vendor/jquery.js}"></script>
-    <script th:src="@{/vendor/what-input.js}"></script>
-    <script th:src="@{/vendor/foundation.js}"></script>
-    <script th:src="@{/app.js}"></script>
+    <div th:replace="/fragments/popularpost :: popularposts"></div>
+
+    <th th:replace="/fragments/footer :: footer"></th>
+
 </body>
 </html>

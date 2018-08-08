@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head">
+
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate CMS</title>
+    <link rel="stylesheet" th:href="@{/foundation.css}"/>
+    <link rel="stylesheet" th:href="@{/app.css}"/>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat|Roboto:900" rel="stylesheet">
+
+
+</head>
+
+<div class="grid-container" th:fragment="navigation">
+    <div class="grid-x grid-padding-x">
+        <div class="large-12 cell">
+            <h1>Ultimate CMS</h1>
+        </div>
+    </div>
+
+    <div class="row" id="navigation">
+        <ul class="menu" style="background-color: #f7f7f7">
+            <li><a href="/">Home</a></li>
+            <li><a href="/archives">Archives</a></li>
+            <li><a href="/post">Add Post</a></li>
+        </ul>
+
+    </div>
+
+
+
+
+</body>
+</html>

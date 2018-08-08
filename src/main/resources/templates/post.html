@@ -1,85 +1,61 @@
 <!doctype html>
 <html class="no-js" lang="en" dir="ltr" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Foundation for Sites</title>
-    <link rel="stylesheet" th:href="@{/foundation.css}"/>
-    <link rel="stylesheet" th:href="@{/app.css}"/>
 
+<head th:replace="/fragments/template :: head">
 
 </head>
 <body>
-<div class="grid-container">
-    <div class="grid-x grid-padding-x">
-        <div class="large-12 cell">
-            <h1>Ultimate CMS</h1>
+
+<div th:replace="/fragments/template :: navigation"></div>
+
+<div class="grid-x" data-equalizer="foo">
+    <div class="cell medium-8">
+        <div class="callout panel" data-equalizer-watch="foo">
+
+            <tr th:each="posts : *{showpost}">
+                <div class="primary callout">
+                    <h4 th:text="${posts.title}"></h4>
+                    <p th:utext="${#dates.format(posts.date, 'dd/MM/yyyy HH:mm')}"></p>
+                    <p th:utext="${posts.text}"></p>
+                    <!--<p th:utext="${posts.modifieddate}"></p>-->
+                    <!--<div class="callout secondary" id="comments">
+                        <p th:utext="${posts.comments}"></p>
+                    </div>-->
+                    <!-- Kommentit saadaan käytyä läpi, mutta niiden näkyminen Thymeleafissa vielä tökkii johtuen HTML-muotoulusta -->
+
+                </div>
+            </tr>
+
+            <tr th:each="posts : *{showpost}">
+                <h4>Comments<span class="badge" id="com" th:text="${#lists.size(posts.comments)}"></span></h4>
+            </tr>
+
+            <tr th:each="comments :*{showcomments}">
+                <div class="callout secondary" id="comments">
+                    <p>Posted: <span th:text="${#dates.format(comments.posted, 'dd/MM/yyyy HH:mm')}"></span></p>
+                    <blockquote><p th:text="${comments.comment}"></p></blockquote>
+                    <p>Posted by: <span th:text="${comments.nickname}"></span></p>
+                </div>
+
+            </tr>
+
+            <h1>Add Comment</h1>
+            <form th:action="@{/post/{_id}/comments(_id=${postid})}" th:object="${addcomment}"
+                  method="POST">
+                <input type="text" th:field="*{nickname}" placeholder="Nickname">
+                <input type="text" th:field="*{comment}" placeholder="Comment">
+                <button class="button large" type="submit">Post</button>
+            </form>
+
+
         </div>
     </div>
 
-    <div class="row" id="navigation">
-
-        <ul class="menu">
-            <li><a href="/">Home</a></li>
-            <li><a href="/archives">Archives</a></li>
-            <li><a href="/post">Add Post</a></li>
-        </ul>
-
-    </div>
-
-    <div class="grid-x" data-equalizer="foo">
-        <div class="cell medium-8">
-            <div class="callout panel" data-equalizer-watch="foo">
-
-                <tr th:each="posts : *{showpost}">
-                    <div class="primary callout">
-                        <h4 th:text="${posts.title}"></h4>
-                        <p th:utext="${posts.text}"></p>
-                        <p th:utext="${posts.date}"></p>
-                        <p th:text="${posts.modifieddate}"></p>
-                        <!--<div class="callout secondary" id="comments">
-                            <p th:utext="${posts.comments}"></p>
-                        </div>-->
-                        <!-- Kommentit saadaan käytyä läpi, mutta niiden näkyminen Thymeleafissa vielä tökkii johtuen HTML-muotoulusta -->
-
-                    </div>
-                </tr>
-
-                <tr th:each="comments :*{showcomments}">
-                    <div class="callout secondary" id="comments">
-                        Posted: <h5 th:text="${comments.posted}"></h5>
-                        Posted by: <h4 th:text="${comments.nickname}"></h4>
-                        Comment: <p th:text="${comments.comment}"></p>
-                    </div>
-
-                </tr>
-
-                <h1>Add Comment</h1>
-                <form th:action="@{/post/{_id}/comments(_id=${postid})}" th:object="${addcomment}"
-                      method="POST">
-                    <input type="text" th:field="*{nickname}" placeholder="Nickname">
-                    <input type="text" th:field="*{comment}" placeholder="Comment">
-                    <button class="button large" type="submit">Post</button>
-                </form>
+    <div th:replace="/fragments/popularpost :: popularposts"></div>
 
 
-            </div>
-        </div>
-        <div class="cell medium-4">
-            <div class="callout" data-equalizer-watch="foo">
+    <th th:replace="/fragments/footer :: footer"></th>
 
-                Heissulivei
-
-            </div>
-        </div>
-    </div>
-
-</div>
-<script th:src="@{/vendor/jquery.js}"></script>
-<script th:src="@{/vendor/what-input.js}"></script>
-<script th:src="@{/vendor/foundation.js}"></script>
-<script th:src="@{/app.js}"></script>
 </body>
 </html>

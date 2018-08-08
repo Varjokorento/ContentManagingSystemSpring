@@ -13,5 +13,7 @@ List<Post> findAllByOrderByDateDesc();
 
 Post findByTitleLike(String title);
 
+List<Post> findAllByOrderByClickedDesc();
+
 
 }

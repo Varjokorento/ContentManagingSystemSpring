@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div class="cell medium-4" th:fragment="popularposts">
+    <div class="callout" data-equalizer-watch="foo">
+
+        <h4>Popular Posts</h4>
+        <tr th:each="post : *{popularposts}">
+            <a th:href="@{/post/{_id}/(_id=${post.id})}"><h6 th:text="${post.title}"></h6></a>
+        </tr>
+
+    </div>
+</div>
+
+
+</body>
+</html>

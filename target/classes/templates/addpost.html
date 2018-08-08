@@ -1,39 +1,19 @@
 <!doctype html>
 <html class="no-js" lang="en" dir="ltr" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Foundation for Sites</title>
-    <link rel="stylesheet" th:href="@{/foundation.css}"/>
-    <link rel="stylesheet" th:href="@{/app.css}"/>
 
-
-
+<head th:replace="/fragments/template :: head">
 
 </head>
 <body>
-<div class="grid-container">
-    <div class="grid-x grid-padding-x">
-        <div class="large-12 cell">
-            <h1>Ultimate CMS</h1>
-        </div>
-    </div>
 
-    <div class="row" id="navigation">
-
-        <ul class="menu">
-            <li><a href="/">Home</a></li>
-            <li><a href="/archives">Archives</a></li>
-            <li><a href="#">Add Post</a></li>
-        </ul>
-
-    </div>
+<div th:replace="/fragments/template :: navigation"></div>
 
     <div class="grid-x" data-equalizer="foo">
         <div class="cell medium-8">
             <div class="callout panel" data-equalizer-watch="foo">
+
+                <!--Add new post form-->
 
                 <h1>Add Post</h1>
                 <form th:action="@{/post}" th:object="${addpost}" method="POST">
@@ -42,23 +22,14 @@
                     <button class="button large" type="submit">Post</button>
                 </form>
 
-
-
-            </div>
-        </div>
-        <div class="cell medium-4">
-            <div class="callout" data-equalizer-watch="foo">
-
-                Heissulivei
+                <!--end of post form-->
 
             </div>
         </div>
-    </div>
 
-</div>
-<script th:src="@{/vendor/jquery.js}"></script>
-<script th:src="@{/vendor/what-input.js}"></script>
-<script th:src="@{/vendor/foundation.js}"></script>
-<script th:src="@{/app.js}"></script>
+        <div th:replace="/fragments/popularpost :: popularposts"></div>
+
+        <th th:replace="/fragments/footer :: footer"></th>
+
 </body>
 </html>

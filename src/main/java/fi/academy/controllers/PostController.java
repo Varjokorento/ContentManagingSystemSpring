@@ -36,7 +36,9 @@ public class PostController {
     @GetMapping("/")
     public String index(Model model) {
         List<Post> posts = postRepository.findAllByOrderByDateDesc();
+        List<Post> popularposts = postRepository.findAllByOrderByClickedDesc();
         model.addAttribute("showposts", posts);
+        model.addAttribute("popularposts", popularposts);
         return "index";
     }
 
@@ -44,8 +46,10 @@ public class PostController {
     public String archives(Model model) {
         Post post = new Post();
         List<Post> posts = postRepository.findAllByOrderByDateDesc();
+        List<Post> popularposts = postRepository.findAllByOrderByClickedDesc();
         model.addAttribute("showposts", posts);
         model.addAttribute("addpost", post);
+        model.addAttribute("popularposts", popularposts);
         return "archives";
     }
 
@@ -76,7 +80,9 @@ public class PostController {
     @GetMapping("/post")
     public String listposts(Model model) {
         Post post = new Post();
+        List<Post> popularposts = postRepository.findAllByOrderByClickedDesc();
         model.addAttribute("addpost", post);
+        model.addAttribute("popularposts", popularposts);
         return "addpost";
     }
 
@@ -103,10 +109,14 @@ public class PostController {
     @GetMapping("/post/{_id}")
     public String findOne(@PathVariable("_id") String _id, Model model) {
         List<Post> optionalPost = postRepository.getPostById(_id);
+        List<Post> popularposts = postRepository.findAllByOrderByClickedDesc();
+        optionalPost.get(0).addClicks();
+        postRepository.save(optionalPost.get(0));
         List<Comment> comments = optionalPost.get(0).getComments();
         String id = optionalPost.get(0).getId();
         model.addAttribute("postid", id);
         model.addAttribute("showpost", optionalPost);
+        model.addAttribute("popularposts", popularposts);
         Comment comment = new Comment();
         model.addAttribute("addcomment", comment);
         model.addAttribute("showcomments", comments);
@@ -115,6 +125,8 @@ public class PostController {
 
     @GetMapping("/post/{_id}/edit")
     public String updatePost(@PathVariable("_id") String _id, Model model) {
+        List<Post> popularposts = postRepository.findAllByOrderByClickedDesc();
+        model.addAttribute("popularposts", popularposts);
         model.addAttribute("editpost", postRepository.findById(_id).get());
         return "edit";
     }
@@ -161,8 +173,8 @@ public class PostController {
         Optional<Post> newPost = postRepository.findById((post.getId()));
         newPost.get().setTitle(post.getTitle());
         newPost.get().setText(post.getText());
-        post.setModifieddate(new Date());
         System.out.println(post.getDate());
+        System.out.println(post.getModifieddate());
         postRepository.deleteById(post.getId());
         postRepository.save(newPost.get());
         return "redirect:/findpost/" + newPost.get().getTitle();
