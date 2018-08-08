@@ -37,7 +37,8 @@
                 <!--Confirmation window for delete post-->
 
                 <div class="reveal" th:id="${post.id}" data-reveal>
-                    <h1>Are you sure?</h1>
+                    <h4>Are you sure?</h4>
+
                     <a type="button" class="alert button" th:href="@{/post/delete/{_id}/(_id=${post.id})}">Delete
                         post</a>
                     <button class="close-button" data-close aria-label="Close modal" type="button">

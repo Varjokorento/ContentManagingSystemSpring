@@ -37,9 +37,7 @@
                 <!--Confirmation window for delete post-->
 
                 <div class="reveal" th:id="${post.id}" data-reveal>
-                    <h1>Are you sure?</h1>
-                    <p>Write 'delete' to textbox if you are.</p>
-                    
+                    <h4>Are you sure?</h4>
 
                     <a type="button" class="alert button" th:href="@{/post/delete/{_id}/(_id=${post.id})}">Delete
                         post</a>
