@@ -26,7 +26,9 @@
                 <div class="primary callout" id="posts">
                     <a th:href="@{/post/{_id}/(_id=${post.id})}"><h4 th:text="${post.title}"></h4></a>
                     <p style="padding: 0;" th:text="${#dates.format(post.date, 'dd/MM/yyyy HH:mm')}"></p>
+                    <div id="textpost">
                     <p style="font-size: 15px;" th:utext="${post.text}"></p>
+                    </div>
 
 
                     <!--Edit / Delete button group-->
@@ -58,12 +60,14 @@
 
             </tr>
 
-            <div th:if="${bookPage.totalPages > 0}" class="pagination"
+            <nav aria-label="Pagination">
+            <ul class="pagination" style="display: inline-block;" th:if="${bookPage.totalPages > 0}"
                  th:each="pageNumber : ${pageNumbers}">
-                <a th:href="@{/(size=${bookPage.size}, page=${pageNumber})}"
+                <li><a th:href="@{/(size=${bookPage.size}, page=${pageNumber})}"
                    th:text=${pageNumber}
-                   th:class="${pageNumber==bookPage.number + 1} ? active"></a>
-            </div>
+                       th:class="${pageNumber==bookPage.number + 1} ? active"></a></li>
+            </ul>
+            </nav>
 
         </div>
 
