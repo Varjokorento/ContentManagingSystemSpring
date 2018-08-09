@@ -26,6 +26,22 @@
                     </div>
 
                 </div>
+                <div sec:authorize="hasAuthority('ADMIN')" class="tiny button-group" style="float: right;">
+                    <a type="button" class="button tiny" th:href="@{/post/{_id}/edit/(_id=${posts.id})}">Edit</a>
+                    <a type="button" class="alert button tiny" th:attr="data-open=${posts.id}">Delete Post</a>
+
+                </div>
+
+                <div class="reveal" th:id="${posts.id}" data-reveal>
+                    <h4>Are you sure?</h4>
+
+                    <a type="button" class="alert button" th:href="@{/post/delete/{_id}/(_id=${posts.id})}">Delete
+                        post</a>
+                    <button class="close-button" data-close aria-label="Close modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
             </tr>
 
             <tr th:each="posts : *{showpost}">
@@ -48,6 +64,7 @@
                         </form>
                     </div>
                 </div>
+
 
 
             </tr>

@@ -65,6 +65,7 @@ public class PostController {
         model.addAttribute("showposts", posts);
         model.addAttribute("popularposts", popularposts);
         model.addAttribute("alltags", findUniqueTags());
+        model.addAttribute("addpost", posts);
         return "index";
     }
 
@@ -90,8 +91,12 @@ public class PostController {
         Post posti = new Post();
         List<Post> posts = new ArrayList<>();
         posts.add(post);
+        List<Post> popularposts = postRepository.findAllByOrderByClickedDesc(new PageRequest(0, 5));
         model.addAttribute("showposts", posts);
         model.addAttribute("addpost", posti);
+        model.addAttribute("tagpost", posti);
+        model.addAttribute("alltags", findUniqueTags());
+        model.addAttribute("popularposts", popularposts);
         return "archives";
     }
 
@@ -104,6 +109,7 @@ public class PostController {
         Post posti = new Post();
         model.addAttribute("showposts", posts);
         model.addAttribute("addpost", posti);
+        model.addAttribute("tagpost", posti);
         return "archives";
     }
 

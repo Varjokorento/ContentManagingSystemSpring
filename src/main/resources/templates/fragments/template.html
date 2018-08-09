@@ -56,8 +56,10 @@
 
 </head>
 
+
+
 <div class="grid-container" th:fragment="navigation">
-    <div class="grid-x grid-padding-x">
+    <div class="grid-x grid-padding-x" style="margin-top: 50px;">
         <div class="large-12 cell">
             <h1>Ultimate CMS</h1>
             <div sec:authorize="!hasAnyAuthority('ADMIN', 'User')">
@@ -118,9 +120,12 @@
         <div class="top-bar-right">
             <ul class="menu">
 
-                <li><input type="search" placeholder="Search..."></li>
-                <li>
-                    <button type="button" class="button">Search</button></li>
+                <!--Tee toiminallisuus hakupalkille-->
+
+             <!--   <form th:action="@{/archives}" th:object="${addpost}" method="POST">
+                <li><input type="text" th:field="*{title}" placeholder="Search..."></li>
+                <li><button type="button" class="button">Search</button></li>
+                </form>-->
                 <div sec:authorize="hasAnyAuthority('ADMIN', 'User')">
                     <li><form th:action="@{/logout}" method="POST"><input type="submit" class="button danger" value="Logout"/></form></li>
                 </div>

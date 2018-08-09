@@ -3,6 +3,12 @@ body {
     font-size: 14px;
 }
 
+
+.top-bar {
+    width: 100%;
+}
+
+
 #navigation {
     background-color: #4b6584;
     padding: 10px 0px 10px 0px;
@@ -28,7 +34,7 @@ body {
 
 #taglinks {
     font-weight: bold;
-    font-size: 27px;
+    font-size: 22px;
 }
 
 .menu a {
