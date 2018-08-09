@@ -13,6 +13,7 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat|Roboto:900|Poppins" rel="stylesheet">
     <script src='https://cloud.tinymce.com/stable/tinymce.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jQuery.dotdotdot/3.2.2/jquery.dotdotdot.js'></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 
 
     <!--    Post editor and file upload codes-->
@@ -64,12 +65,12 @@
             <h1>Ultimate CMS</h1>
             <div sec:authorize="!hasAnyAuthority('ADMIN', 'User')">
                 <ul class="menu align-right">
-                    <li><a  data-open="loginmodal">Login</a></li><li style="margin-right: 0px;"><a data-open="signupmodal">Register</a></li>
+                    <li style="border-top-right-radius: 10px; border-top-left-radius: 10px;"><a  data-open="loginmodal">Login</a></li><li style="margin-right: 0px; border-top-right-radius: 10px; border-top-left-radius: 10px;"><a data-open="signupmodal">Register</a></li>
                 </ul>
             </div>
                 <div sec:authorize="hasAnyAuthority('ADMIN', 'User')">
                     <ul class="menu align-right">
-                        <li><a th:text="${#request.userPrincipal.name}"></a></li>
+                        <li style="border-top-right-radius: 10px; border-top-left-radius: 10px;"><a th:text="${#request.userPrincipal.name}"></a></li>
                     </ul>
                 </div>
         </div>
@@ -107,7 +108,7 @@
         </button>
     </div>
 
-    <div class="top-bar" id="navigation">
+    <div class="top-bar" id="navigation" style="border-top-left-radius: 10px;">
         <div class="top-bar-left">
             <ul class="menu">
                 <li><a href="/">Home</a></li>
