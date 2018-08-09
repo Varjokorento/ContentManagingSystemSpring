@@ -100,6 +100,16 @@ public class PostController {
         return "archives";
     }
 
+    @PostMapping("/likes/{_id}")
+    public String likeAPost(@PathVariable("_id") String _id) {
+        Optional<Post> post = postRepository.findById(_id);
+        post.get().addLikes();
+        postRepository.save(post.get());
+        return "redirect:/post/" + _id;
+    }
+
+
+
     @GetMapping("/archives/tag/{tag}")
     public String archivesfindbyTag(@PathVariable("tag") String tag, Model model) {
         List posts = postRepository.findByTagitContaining(tag);
@@ -270,6 +280,7 @@ public class PostController {
 
         post.setComments(kommentit);
         post.setClicked(0);
+        post.setLikes(1);
         postRepository.save(post);
         return "redirect:/";
     }

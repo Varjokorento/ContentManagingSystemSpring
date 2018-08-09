@@ -38,6 +38,7 @@ public class Post {
     private List<Comment> comments;
     private String tags;
     private List<String> tagit;
+    private int likes;
 
     public Post() {}
 
@@ -154,5 +155,15 @@ public class Post {
 
     public void addClicks() {
         clicked++;
+    }
+
+    public void addLikes() { likes++;}
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
     }
 }
