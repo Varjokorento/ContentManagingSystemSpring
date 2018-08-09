@@ -41,7 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/post", "/login").access("hasAnyAuthority('ADMIN', 'USER' )").anyRequest().permitAll()
                 .and().formLogin().loginPage("/login").failureUrl("/error").usernameParameter("username").passwordParameter("password").defaultSuccessUrl("/")
-                .permitAll().and().logout().permitAll();
+                .permitAll().and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/");
         http.exceptionHandling().accessDeniedPage("/login");
     }
 

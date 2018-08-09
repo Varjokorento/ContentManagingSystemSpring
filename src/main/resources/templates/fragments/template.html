@@ -7,11 +7,13 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ultimate CMS</title>
+    <script th:src="@{/vendor/jquery.js}"></script>
     <link rel="stylesheet" th:href="@{/foundation.css}"/>
     <link rel="stylesheet" th:href="@{/app.css}"/>
     <link href="https://fonts.googleapis.com/css?family=Montserrat|Roboto:900|Poppins" rel="stylesheet">
     <script src='https://cloud.tinymce.com/stable/tinymce.min.js'></script>
-    <script src='http://pagination.js.org/dist/2.1.3/pagination.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jQuery.dotdotdot/3.2.2/jquery.dotdotdot.js'></script>
+
 
     <!--    Post editor and file upload codes-->
 
@@ -63,6 +65,11 @@
                     <li><a  data-open="loginmodal">Login</a></li><li style="margin-right: 0px;"><a data-open="signupmodal">Register</a></li>
                 </ul>
             </div>
+                <div sec:authorize="hasAnyAuthority('ADMIN', 'User')">
+                    <ul class="menu align-right">
+                        <li><a th:text="${#request.userPrincipal.name}"></a></li>
+                    </ul>
+                </div>
         </div>
     </div>
 
@@ -114,11 +121,9 @@
                 <li><input type="search" placeholder="Search..."></li>
                 <li>
                     <button type="button" class="button">Search</button></li>
-                    <div sec:authorize="hasAnyAuthority('ADMIN', 'User')">
-                        <span th:text="${#request.userPrincipal.name}"></span>
+                <div sec:authorize="hasAnyAuthority('ADMIN', 'User')">
                     <li><form th:action="@{/logout}" method="POST"><input type="submit" class="button danger" value="Logout"/></form></li>
-                    </div>
-
+                </div>
             </ul>
         </div>
     </div>

@@ -1,8 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
+
 <th th:fragment="footer">
-<script th:src="@{/vendor/jquery.js}"></script>
+
+    <script>
+
+        jQuery(document).ready(function( $ ) {
+
+            $("#textpost").dotdotdot({
+                watch: window,
+                height: 100,
+                ellipsis: "\u2026 ",
+                keep: null,
+                truncate: "word"
+            });
+
+        });
+
+    </script>
+
 <script th:src="@{/vendor/what-input.js}"></script>
 <script th:src="@{/vendor/foundation.js}"></script>
 <script th:src="@{/app.js}"></script>
