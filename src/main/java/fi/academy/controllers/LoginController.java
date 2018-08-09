@@ -29,13 +29,13 @@ public class LoginController {
         ModelAndView modelAndView = new ModelAndView();
         User user = new User();
         modelAndView.addObject("user", user);
-        modelAndView.setViewName("signup");
+        modelAndView.setViewName("template");
         return modelAndView;
     }
 
 
     @PostMapping("/signup")
-    public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
+    public String createNewUser(@Valid User user, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
         User userExists = userService.findUserByUsername(user.getUsername());
         if(userExists != null) {
@@ -50,7 +50,7 @@ public class LoginController {
             modelAndView.addObject("user", new User());
             modelAndView.setViewName("login");
         }
-        return modelAndView;
+        return "redirect:/";
     }
 
 

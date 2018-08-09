@@ -18,11 +18,10 @@
                     <h4 th:text="${posts.title}"></h4>
                     <p th:utext="${#dates.format(posts.date, 'dd/MM/yyyy HH:mm')}"></p>
                     <p th:utext="${posts.text}"></p>
-                    <p th:utext="${posts.modifiedDatetoDisplay}"></p>
-                    <div class="secondary callout" id="tagsbar">
-                        Tags:
+                    <p style="font-style: italic; font-size: 10px;" th:utext="${posts.modifiedDatetoDisplay}"></p>
+                    <div id="tagsbar">
                     <ul style="display: inline;" th:each="tag : ${posts.tagit}">
-                        <span th:text="${tag}"></span>,
+                        <span class="label primary" id="taglabel" th:text="${tag}"></span>
                     </ul>
                     </div>
 

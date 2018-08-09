@@ -10,11 +10,12 @@ body {
 
 #tagsbar {
     margin: 0px;
-    border-radius: 10px;
-    color: #3b3b3b;
     font-size: 12px;
     font-style: italic;
-    padding: 2px;
+}
+
+#taglabel {
+    border-radius: 5px;
 }
 
 #dot {
