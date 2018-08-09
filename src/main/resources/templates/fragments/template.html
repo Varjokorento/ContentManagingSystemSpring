@@ -77,10 +77,10 @@
         <h1>Login</h1>
         <form class="form-signin" th:action="@{/login}" method="post">
             <label>Username:
-            <input type="text" name="username" id="inputUsername">
+            <input type="text" name="username" id="inputUsername" required>
             </label>
             <label>Password:
-            <input type="password" name="password" id="inputPassword">
+            <input type="password" name="password" id="inputPassword" required>
             </label>
             <button class="button" type="submit">Login</button>
         </form>
@@ -93,10 +93,10 @@
         <h1>Create Account</h1>
         <form th:action="@{/signup}" method="post">
             <label>Username:
-            <input type="text" name="username">
+            <input type="text" name="username" required>
             </label>
             <label>Password:
-            <input type="password" name="password">
+            <input type="password" name="password" required>
             </label>
             <button class="button" type="submit">Register</button>
         </form>

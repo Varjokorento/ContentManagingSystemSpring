@@ -36,6 +36,9 @@ public class LoginController {
 
     @PostMapping("/signup")
     public String createNewUser(@Valid User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "/";
+        }
         ModelAndView modelAndView = new ModelAndView();
         User userExists = userService.findUserByUsername(user.getUsername());
         if(userExists != null) {

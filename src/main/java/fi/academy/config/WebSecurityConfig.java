@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -36,11 +37,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(bCryptPasswordEncoder);
     }
 
+    /*Tässä kaikki virheet tekevät errorin koska virhekäsittelyä ei ole toteutettu html puolella*/
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/post", "/login").access("hasAnyAuthority('ADMIN', 'USER' )").anyRequest().permitAll()
-                .and().formLogin().loginPage("/login").failureUrl("/error").usernameParameter("username").passwordParameter("password").defaultSuccessUrl("/")
+                .and().formLogin().loginPage("/login").failureUrl("/").usernameParameter("username").passwordParameter("password").defaultSuccessUrl("/")
                 .permitAll().and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/");
         http.exceptionHandling().accessDeniedPage("/login");
     }

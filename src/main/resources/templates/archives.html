@@ -15,13 +15,14 @@
 
 
             <form th:action="@{/archives}" th:object="${addpost}" method="POST">
+                <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
                 <input type="text" th:field="*{title}" placeholder="Search by Name">
-                <button class="button large" type="submit">Search by Name</button>
+                <button class="button" type="submit">Search by Name</button>
             </form>
 
-            <form th:action="@{/archives/tags}" th:object="${addpost}" method="POST">
+            <form th:action="@{/archives/tags}" th:object="${tagpost}" method="POST">
                 <input type="text" th:field="*{title}" placeholder="Search by Tags. Separate tags by /">
-                <button class="button large" type="submit">Search by Tag</button>
+                <button class="button" type="submit">Search by Tag</button>
             </form>
 
 

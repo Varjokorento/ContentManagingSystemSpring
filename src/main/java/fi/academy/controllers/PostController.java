@@ -12,9 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -75,12 +77,16 @@ public class PostController {
         model.addAttribute("addpost", post);
         model.addAttribute("alltags", findUniqueTags());
         model.addAttribute("popularposts", popularposts);
+        model.addAttribute("tagpost", post);
         return "archives";
     }
 
     @GetMapping("/archives/{title}")
     public String archivesfindbyname(@PathVariable("title") String title, Model model) {
         Post post = postRepository.findByTitleLike(title);
+        if(post == null) {
+            return "redirect:/error";
+        }
         Post posti = new Post();
         List<Post> posts = new ArrayList<>();
         posts.add(post);
@@ -92,6 +98,9 @@ public class PostController {
     @GetMapping("/archives/tag/{tag}")
     public String archivesfindbyTag(@PathVariable("tag") String tag, Model model) {
         List posts = postRepository.findByTagitContaining(tag);
+        if(posts.isEmpty()) {
+            return "redirect:/archives";
+        }
         Post posti = new Post();
         model.addAttribute("showposts", posts);
         model.addAttribute("addpost", posti);
@@ -111,12 +120,15 @@ public class PostController {
 
 
     @PostMapping("/archives/tags")
-    public String archivesfindbyTags(@ModelAttribute("addpost") @RequestBody Post post, Model model) {
+    public String archivesfindbyTags(@ModelAttribute("tagpost") @RequestBody Post post, Model model) {
         String[] searchParameters = post.getTitle().split("/");
         List postit = new ArrayList();
         List <List> superList = new ArrayList<>();
         for (int i = 0; i < searchParameters.length; i++ ){
             superList.add(postRepository.findByTagsContaining(searchParameters[i]));
+            if(superList.isEmpty()) {
+                return "redirect:/archives";
+            }
         }
         for(int i = 0; i < superList.size(); i++ ){
             for(int a = 0; a < superList.get(i).size(); a++) {
@@ -126,10 +138,12 @@ public class PostController {
             }
         }
         List<Post> popularposts = postRepository.findAllByOrderByClickedDesc(new PageRequest(0, 5));
+        Post posti = new Post();
         model.addAttribute("showposts", postit);
-        model.addAttribute("addpost", post);
+        model.addAttribute("addpost", posti);
         model.addAttribute("alltags", findUniqueTags());
         model.addAttribute("popularposts", popularposts);
+        model.addAttribute("tagpost", post);
         return "archives";
     }
 

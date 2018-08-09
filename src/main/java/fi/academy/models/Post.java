@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +24,7 @@ public class Post {
     @Id
     private String id;
 
+    @NotEmpty(message = "Title cannot be empty!")
     private String title;
     private String text;
     @DateTimeFormat(pattern = "dd-MM-yyyy")
