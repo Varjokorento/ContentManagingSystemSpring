@@ -2,11 +2,13 @@ package fi.academy.controllers;
 
 import fi.academy.models.Comment;
 import fi.academy.models.Post;
+import fi.academy.models.PostService;
 import fi.academy.models.Tag;
 import fi.academy.repositories.CommentRepository;
 import fi.academy.repositories.PostRepository;
 import fi.academy.repositories.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @EnableMongoAuditing
@@ -33,11 +37,32 @@ public class PostController {
     @Autowired
     TagRepository tagRepository;
 
+    private static int currentPage = 1;
+    private static int pageSize = 5;
+
+    @Autowired
+    private PostService postService;
+
 
     @GetMapping("/")
-    public String index(Model model) {
+    public String index(Model model, @RequestParam("page") Optional<Integer> page,
+                        @RequestParam("size") Optional<Integer> size) {
         List<Post> posts = postRepository.findAllByOrderByDateDesc();
         List<Post> popularposts = postRepository.findAllByOrderByClickedDesc(new PageRequest(0, 5));
+        page.ifPresent(p -> currentPage = p);
+        size.ifPresent(s -> pageSize = s);
+
+        Page<Post> bookPage = postService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+
+        model.addAttribute("bookPage", bookPage);
+
+        int totalPages = bookPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
         model.addAttribute("showposts", posts);
         model.addAttribute("popularposts", popularposts);
         model.addAttribute("alltags", findUniqueTags());

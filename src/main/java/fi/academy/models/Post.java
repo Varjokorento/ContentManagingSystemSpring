@@ -39,42 +39,6 @@ public class Post {
 
     public Post() {}
 
-//    public Post(String title, String text, Date date) {
-//        this.title = title;
-//        this.text = text;
-//        this.date = date;
-//        this.clicked = 0;
-//    }
-//
-////    public Post(String title, String text, Date date) {
-////        this.title = title;
-////        this.text = text;
-////        this.date = date;
-////    }
-//
-//
-//
-//
-//    public Post(String title, String text) {
-//        this.title = title;
-//        this.text = text;
-//    }
-//
-//    public Post(String title, String text, Date date, List<Comment> comments) {
-//        this.title = title;
-//        this.text = text;
-//        this.date = date;
-//        this.comments = comments;
-//    }
-//
-//
-//    public Post(String id, String title, String text, Date date) {
-//        this.id = id;
-//        this.title = title;
-//        this.text = text;
-//        this.date = date;
-//    }
-
     public String getId() {
         return id;
     }

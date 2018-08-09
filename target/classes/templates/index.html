@@ -19,11 +19,15 @@
 
             <!--Get five posts to page (Latest first)-->
 
-            <tr th:each="post : *{showposts}">
+
+            <tr th:each="post, iStat : ${bookPage.content}"
+                th:style="${iStat.odd}? 'font-weight: bold;'"
+                th:alt-title="${iStat.even}? 'even' : 'odd'">
                 <div class="primary callout" id="posts">
                     <a th:href="@{/post/{_id}/(_id=${post.id})}"><h4 th:text="${post.title}"></h4></a>
                     <p style="padding: 0;" th:text="${#dates.format(post.date, 'dd/MM/yyyy HH:mm')}"></p>
                     <p style="font-size: 15px;" th:utext="${post.text}"></p>
+
 
                     <!--Edit / Delete button group-->
 
@@ -36,6 +40,7 @@
                     <!--End of button group-->
 
                 </div>
+
 
                 <!--Confirmation window for delete post-->
 
@@ -52,6 +57,13 @@
                 <!--End of confirmation windows-->
 
             </tr>
+
+            <div th:if="${bookPage.totalPages > 0}" class="pagination"
+                 th:each="pageNumber : ${pageNumbers}">
+                <a th:href="@{/(size=${bookPage.size}, page=${pageNumber})}"
+                   th:text=${pageNumber}
+                   th:class="${pageNumber==bookPage.number + 1} ? active"></a>
+            </div>
 
         </div>
 
