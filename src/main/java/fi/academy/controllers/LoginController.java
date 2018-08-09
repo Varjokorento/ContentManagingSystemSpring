@@ -12,6 +12,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 
+//Hoitaa login- ja kirjautumis-pyynnöt
+
 @Controller
 public class LoginController {
     @Autowired

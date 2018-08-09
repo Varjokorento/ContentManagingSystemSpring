@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.*;
 
+//Tämä huolehtii käyttäjätietojen tallennuksesta, roolien asettamisesta sekä kryptauksesta.
+
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
     @Autowired

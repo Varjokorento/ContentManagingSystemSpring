@@ -14,6 +14,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
+//Tämä luo rakenteen autentikoinnille sekä sille, minne ohjataan
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -47,36 +49,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll().and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/");
         http.exceptionHandling().accessDeniedPage("/login");
     }
-
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        System.out.println("hei");
-//        http
-//                .authorizeRequests()
-//                .antMatchers("/").permitAll()
-//                .antMatchers("login").permitAll()
-//                .antMatchers("/signup").permitAll().anyRequest()
-//                .authenticated().and().csrf().disable().formLogin().successHandler(customizeAuthenticationSuccessHandler)
-//                .loginPage("login").failureUrl("/error")
-//                .usernameParameter("username")
-//                .passwordParameter("password")
-//                .and().logout()
-//                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-//                .logoutSuccessUrl("/").and().exceptionHandling();
-//
-////        http
-////                .authorizeRequests()
-////                .antMatchers("/").permitAll()
-////                .antMatchers("login").permitAll()
-////                .antMatchers("/signup").permitAll().anyRequest()
-////                .authenticated().and().csrf().disable().formLogin().successHandler(customizeAuthenticationSuccessHandler)
-////                .loginPage("login").failureUrl("/error")
-////                .usernameParameter("username")
-////                .passwordParameter("password")
-////                .and().logout()
-////                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-////                .logoutSuccessUrl("/").and().exceptionHandling();
-//    }
 
     @Override
     public void configure(WebSecurity web) throws Exception {

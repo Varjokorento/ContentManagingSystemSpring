@@ -120,10 +120,9 @@
         </div>
         <div class="top-bar-right">
             <ul class="menu">
-
                 <form style="display: inline;" autocomplete="off" th:action="@{/archives}" method=POST>
                 <input type="text" th:id="title" th:name="title" placeholder="Search...">
-                <button style="display: inline; margin-right: 15px;" type="button" class="button">Search</button>
+                <button style="display: inline; margin-right: 15px;" type="submit" class="button">Search</button>
                 </form>
                 <div sec:authorize="hasAnyAuthority('ADMIN', 'User')">
                     <form style="display: inline;" th:action="@{/logout}" method="POST"><input type="submit" class="button" value="Logout"/></form>

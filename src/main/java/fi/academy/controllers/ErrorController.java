@@ -1,6 +1,6 @@
 package fi.academy.controllers;
 
-
+//Error-käsittelijä, joka tunnistaa eri virhetilanteett
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

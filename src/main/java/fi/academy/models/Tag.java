@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+//Tämä on Tag-tietokannan alkio
+
 public class Tag {
     @Id
     private String id;

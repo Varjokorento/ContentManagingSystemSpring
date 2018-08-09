@@ -5,6 +5,8 @@ import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.index.Indexed;
 
+//Nämä ovat Spring Securityn roolit
+
 @Document(collection = "role")
 public class Role {
     @Id

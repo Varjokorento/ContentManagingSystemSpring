@@ -8,6 +8,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
+//Spring Securityn käyttäjätietokannan alkiot
+
 @Document(collection = "User")
 public class User {
 
