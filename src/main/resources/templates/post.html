@@ -56,7 +56,10 @@
             <h1>Add Comment</h1>
             <form th:action="@{/post/{_id}/comments(_id=${postid})}" th:object="${addcomment}"
                   method="POST">
-                <input type="text" th:field="*{nickname}" placeholder="Nickname">
+
+                <input type="hidden" class="form-control" th:id="kayttajaid" th:name="kayttajaid"
+                       th:value="${#authentication.name}"/>
+                <input type="hidden" th:id="nickname" th:name="nickname" th:value="${#request.userPrincipal.name}" placeholder="Nickname">
                 <input type="text" th:field="*{comment}" placeholder="Comment">
                 <button class="button large" type="submit">Post</button>
             </form>
