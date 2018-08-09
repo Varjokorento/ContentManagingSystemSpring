@@ -14,7 +14,7 @@
         <div class="callout panel" data-equalizer-watch="foo">
 
 
-            <form th:action="@{/archives}" th:object="${addpost}" method="POST">
+            <form autocomplete="off" th:action="@{/archives}" th:object="${addpost}" method="POST">
                 <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
                 <input type="text" th:field="*{title}" placeholder="Search by Name">
                 <button class="button" type="submit">Search by Name</button>
