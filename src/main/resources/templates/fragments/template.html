@@ -73,10 +73,17 @@
         </div>
         <div class="top-bar-right">
             <ul class="menu">
+
                 <li><input type="search" placeholder="Search..."></li>
                 <li>
-                    <button type="button" class="button">Search</button>
-                </li>
+                    <button type="button" class="button">Search</button></li>
+                    <div sec:authorize="!hasAnyAuthority('ADMIN', 'User')">
+                        <li><a th:href="@{/login}">Login</a> or <a th:href="@{/signup}">Register</a></li>
+                    </div>
+                    <div sec:authorize="hasAnyAuthority('ADMIN', 'User')">
+                    <li><form th:action="@{/logout}" method="POST"><input type="submit" class="button danger" value="Logout"/></form></li>
+                    </div>
+
             </ul>
         </div>
     </div>
