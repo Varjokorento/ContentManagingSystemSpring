@@ -9,8 +9,5 @@
         <module name="ultimatecms" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="ultimatecms" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

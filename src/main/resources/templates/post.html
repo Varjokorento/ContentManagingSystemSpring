@@ -23,7 +23,14 @@
                     <ul style="display: inline;" th:each="tag : ${posts.tagit}">
                         <span class="label primary" id="taglabel" th:text="${tag}"></span>
                     </ul>
-                    </div>
+                        <p th:text="${posts.likes}"></p>
+
+                </div>
+                <form th:action="@{/likes/{_id}(_id=${posts.id})}"
+                      method="POST">
+                    <button class="button" type="submit">Like</button>
+                </form>
+
 
                 </div>
                 <div sec:authorize="hasAuthority('ADMIN')" class="tiny button-group" style="float: right;">
