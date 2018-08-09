@@ -16,7 +16,7 @@ public class Comment {
     private String comment;
     @CreatedDate
     private Date posted;
-
+    private String postedDate;
     public Comment() {}
 
     public Comment(String nickname, String comment, Date posted) {
@@ -55,6 +55,14 @@ public class Comment {
 
     public void setPosted(Date posted) {
         this.posted = posted;
+    }
+
+    public String getPostedDate() {
+        return postedDate;
+    }
+
+    public void setPostedDate(String postedDate) {
+        this.postedDate = postedDate;
     }
 
     @Override

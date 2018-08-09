@@ -38,7 +38,18 @@
                     <p>Posted: <span th:text="${#dates.format(comments.posted, 'dd/MM/yyyy HH:mm')}"></span></p>
                     <blockquote><p th:text="${comments.comment}"></p></blockquote>
                     <p>Posted by: <span th:text="${comments.nickname}"></span></p>
+                    <div sec:authorize="hasAuthority('ADMIN')" class="tiny button-group" style="float: right;">
+                        <form th:action="@{/post/{_id}/comments/delete(_id=${postid})}" th:object="${deletecomment}"
+                              method="POST">
+                            <input type="hidden" th:id="id" th:name="commentId" th:value="${comments.id}">
+                            <input type="hidden" name="nickname" th:value="${comments.nickname}">
+                            <input type="hidden" name="comment" th:value="${comments.comment}">
+                            <input type="hidden" name="postedDate" th:value="${comments.postedDate}">
+                            <button class="button large" type="submit">Delete</button>
+                        </form>
+                    </div>
                 </div>
+
 
             </tr>
 <div sec:authorize="hasAnyAuthority('ADMIN', 'User')">

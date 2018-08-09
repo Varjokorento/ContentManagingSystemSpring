@@ -26,7 +26,6 @@ public class PostService {
 
     public Page<Post> findPaginated(Pageable pageable) {
         List<Post> posts = findPosts(postRepository);
-        System.out.println(posts);
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
         int startItem = currentPage * pageSize;

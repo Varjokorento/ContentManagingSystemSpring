@@ -1,9 +1,6 @@
 package fi.academy.controllers;
 
-import fi.academy.models.Comment;
-import fi.academy.models.Post;
-import fi.academy.models.PostService;
-import fi.academy.models.Tag;
+import fi.academy.models.*;
 import fi.academy.repositories.CommentRepository;
 import fi.academy.repositories.PostRepository;
 import fi.academy.repositories.TagRepository;
@@ -87,7 +84,6 @@ public class PostController {
         Post posti = new Post();
         List<Post> posts = new ArrayList<>();
         posts.add(post);
-        System.out.println(posts);
         model.addAttribute("showposts", posts);
         model.addAttribute("addpost", posti);
         return "archives";
@@ -97,7 +93,6 @@ public class PostController {
     public String archivesfindbyTag(@PathVariable("tag") String tag, Model model) {
         List posts = postRepository.findByTagitContaining(tag);
         Post posti = new Post();
-        System.out.println(posts);
         model.addAttribute("showposts", posts);
         model.addAttribute("addpost", posti);
         return "archives";
@@ -109,10 +104,8 @@ public class PostController {
         Post posti = postRepository.findByTitleLike(post.getTitle());
         List<Post> posts = new ArrayList<>();
         posts.add(posti);
-        System.out.println(posts);
         String titteli = post.getTitle();
         String url = "redirect:/archives/" + titteli;
-        System.out.println(url);
         return url;
     }
 
@@ -132,7 +125,6 @@ public class PostController {
                 }
             }
         }
-        System.out.println(postit);
         List<Post> popularposts = postRepository.findAllByOrderByClickedDesc(new PageRequest(0, 5));
         model.addAttribute("showposts", postit);
         model.addAttribute("addpost", post);
@@ -165,11 +157,30 @@ public class PostController {
         if (post.get().getComments() == null) {
             post.get().setComments(new ArrayList<>());
         }
+
         List<Comment> comments = post.get().getComments();
         comment.setPosted(new Date());
+        comment.setPostedDate(new Date().toString());
         comments.add(comment);
+        commentRepository.save(comment);
         post.get().setComments(comments);
         postRepository.save(post.get());
+        return "redirect:/post/{_id}";
+    }
+
+    @PostMapping("/post/{_id}/comments/delete")
+    public String deleteComment(@ModelAttribute("deletecomment") Comment comment, @PathVariable("_id") String _id) {
+        System.out.println(comment.getPostedDate());
+        System.out.println(comment.getComment());
+        List<Post> optionalPost = postRepository.getPostById(_id);
+        List<Comment> kommentit = optionalPost.get(0).getComments();
+        for (int i = 0; i < kommentit.size(); i++ ) {
+            if(kommentit.get(i).getPostedDate().equals(comment.getPostedDate())) {
+                kommentit.remove(i);
+            }
+        }
+        optionalPost.get(0).setComments(kommentit);
+        postRepository.save(optionalPost.get(0));
         return "redirect:/post/{_id}";
     }
 
@@ -181,12 +192,13 @@ public class PostController {
         postRepository.save(optionalPost.get(0));
         List<Comment> comments = optionalPost.get(0).getComments();
         String id = optionalPost.get(0).getId();
-        System.out.println(optionalPost.get(0).getClicked());
         model.addAttribute("postid", id);
         model.addAttribute("showpost", optionalPost);
         model.addAttribute("popularposts", popularposts);
         model.addAttribute("alltags", findUniqueTags());
         Comment comment = new Comment();
+        Comment k = new Comment();
+        model.addAttribute("deletecomment", k);
         model.addAttribute("addcomment", comment);
         model.addAttribute("showcomments", comments);
         return "post";
@@ -207,7 +219,7 @@ public class PostController {
         Post posti = new Post();
         List<Post> posts = new ArrayList<>();
         posts.add(post);
-        System.out.println(posts);
+
         model.addAttribute("showpost", posts);
         Comment comment = new Comment();
         model.addAttribute("addcomment", comment);
