@@ -1,5 +1,7 @@
 package fi.academy.controllers;
 
+import fi.academy.helpfunctions.MonthGetter;
+import fi.academy.helpfunctions.TagGetter;
 import fi.academy.models.*;
 import fi.academy.repositories.CommentRepository;
 import fi.academy.repositories.PostRepository;
@@ -64,8 +66,9 @@ public class PostController {
         }
         model.addAttribute("showposts", posts);
         model.addAttribute("popularposts", popularposts);
-        model.addAttribute("alltags", findUniqueTags());
+        model.addAttribute("alltags", TagGetter.findUniqueTags(tagRepository));
         model.addAttribute("addpost", posts);
+        model.addAttribute("allmonths", MonthGetter.findMonths(postRepository));
         return "index";
     }
 
@@ -76,9 +79,10 @@ public class PostController {
         List<Post> popularposts = postRepository.findAllByOrderByClickedDesc(new PageRequest(0, 5));
         model.addAttribute("showposts", posts);
         model.addAttribute("addpost", post);
-        model.addAttribute("alltags", findUniqueTags());
+        model.addAttribute("alltags", TagGetter.findUniqueTags(tagRepository));
         model.addAttribute("popularposts", popularposts);
         model.addAttribute("tagpost", post);
+        model.addAttribute("allmonths", MonthGetter.findMonths(postRepository));
         return "archives";
     }
 
@@ -95,8 +99,9 @@ public class PostController {
         model.addAttribute("showposts", posts);
         model.addAttribute("addpost", posti);
         model.addAttribute("tagpost", posti);
-        model.addAttribute("alltags", findUniqueTags());
+        model.addAttribute("alltags", TagGetter.findUniqueTags(tagRepository));
         model.addAttribute("popularposts", popularposts);
+        model.addAttribute("allmonths", MonthGetter.findMonths(postRepository));
         return "archives";
     }
 
@@ -113,6 +118,7 @@ public class PostController {
     @GetMapping("/archives/tag/{tag}")
     public String archivesfindbyTag(@PathVariable("tag") String tag, Model model) {
         List posts = postRepository.findByTagitContaining(tag);
+        List<Post> popularposts = postRepository.findAllByOrderByClickedDesc(new PageRequest(0, 5));
         if(posts.isEmpty()) {
             return "redirect:/archives";
         }
@@ -120,6 +126,9 @@ public class PostController {
         model.addAttribute("showposts", posts);
         model.addAttribute("addpost", posti);
         model.addAttribute("tagpost", posti);
+        model.addAttribute("alltags", TagGetter.findUniqueTags(tagRepository));
+        model.addAttribute("allmonths", MonthGetter.findMonths(postRepository));
+        model.addAttribute("popularposts", popularposts);
         return "archives";
     }
 
@@ -157,12 +166,34 @@ public class PostController {
         Post posti = new Post();
         model.addAttribute("showposts", postit);
         model.addAttribute("addpost", posti);
-        model.addAttribute("alltags", findUniqueTags());
+        model.addAttribute("alltags", TagGetter.findUniqueTags(tagRepository));
+        model.addAttribute("allmonths", MonthGetter.findMonths(postRepository));
         model.addAttribute("popularposts", popularposts);
         model.addAttribute("tagpost", post);
         return "archives";
     }
 
+    @GetMapping("/date/{month}")
+    public String findByMonth(@PathVariable int month, Model model) {
+        System.out.println("Hello date!");
+        List <Post> posts = postRepository.findAll();
+        System.out.println("Hello date" + posts.get(0).getDate().getMonth());
+        List<Post> popularposts = postRepository.findAllByOrderByClickedDesc(new PageRequest(0, 5));
+        List <Post> thatMonthsPosts = new ArrayList<>();
+        for(int i = 0; i < posts.size(); i++) {
+            if(posts.get(i).getDate().getMonth() == month) {
+                thatMonthsPosts.add(posts.get(i));
+            }
+        }
+        Post posti = new Post();
+        model.addAttribute("showposts", thatMonthsPosts);
+        model.addAttribute("addpost", posti);
+        model.addAttribute("tagpost", posti);
+        model.addAttribute("alltags", TagGetter.findUniqueTags(tagRepository));
+        model.addAttribute("allmonths", MonthGetter.findMonths(postRepository));
+        model.addAttribute("popularposts", popularposts);
+        return "archives";
+    }
 
 
     @GetMapping("/post")
@@ -170,7 +201,8 @@ public class PostController {
         Post post = new Post();
         List<Post> popularposts = postRepository.findAllByOrderByClickedDesc(new PageRequest(0, 5));
         model.addAttribute("addpost", post);
-        model.addAttribute("alltags", findUniqueTags());
+        model.addAttribute("alltags", TagGetter.findUniqueTags(tagRepository));
+        model.addAttribute("allmonths", MonthGetter.findMonths(postRepository));
         model.addAttribute("popularposts", popularposts);
         return "addpost";
     }
@@ -225,7 +257,8 @@ public class PostController {
         model.addAttribute("postid", id);
         model.addAttribute("showpost", optionalPost);
         model.addAttribute("popularposts", popularposts);
-        model.addAttribute("alltags", findUniqueTags());
+        model.addAttribute("alltags", TagGetter.findUniqueTags(tagRepository));
+        model.addAttribute("allmonths", MonthGetter.findMonths(postRepository));
         Comment comment = new Comment();
         Comment k = new Comment();
         model.addAttribute("deletecomment", k);
@@ -238,7 +271,8 @@ public class PostController {
     public String updatePost(@PathVariable("_id") String _id, Model model) {
         List<Post> popularposts = postRepository.findAllByOrderByClickedDesc(new PageRequest(0, 5));
         model.addAttribute("popularposts", popularposts);
-        model.addAttribute("alltags", findUniqueTags());
+        model.addAttribute("alltags", TagGetter.findUniqueTags(tagRepository));
+        model.addAttribute("allmonths", MonthGetter.findMonths(postRepository));
         model.addAttribute("editpost", postRepository.findById(_id).get());
         return "edit";
     }

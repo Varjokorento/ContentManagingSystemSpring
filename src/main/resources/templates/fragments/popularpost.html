@@ -2,19 +2,28 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <div class="cell medium-4" th:fragment="popularposts">
-    <div class="callout" data-equalizer-watch="foo">
+    <div class="callout" style="border-bottom-right-radius: 15px;" data-equalizer-watch="foo">
 
         <h4>Popular Posts</h4>
 
         <tr th:each="post : *{popularposts}">
             <a th:href="@{/post/{_id}/(_id=${post.id})}"><h6 th:text="${post.title}"></h6></a>
         </tr>
+        
         <h4>All tags</h4>
 
         <tr th:each="tag : *{alltags}" style="display: inline;">
             <a th:href="@{/archives/tag/{tag}/(tag=${tag.tag})}"><span id="taglinks" th:text="${tag.tag}"></span></a><span id="dot">,</span>
         </tr>
+
+        <h4> Archive </h4>
+
+        <tr th:each="month : *{allmonths}" style="display: inline;">
+            <a th:href="@{/archives/tag/{tag}/(tag=${month})}"><span id="taglinks" th:text="${month}"></span></a><span id="dot">,</span>
+        </tr>
+
     </div>
+
 </div>
 
 

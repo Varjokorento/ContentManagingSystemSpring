@@ -8,6 +8,10 @@ body {
     width: 100%;
 }
 
+#posts {
+    border-radius: 10px;
+}
+
 
 #navigation {
     background-color: #4b6584;
