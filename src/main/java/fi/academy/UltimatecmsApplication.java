@@ -35,7 +35,6 @@ public class UltimatecmsApplication extends SpringBootServletInitializer {
     }
 
 
-
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -44,24 +43,6 @@ public class UltimatecmsApplication extends SpringBootServletInitializer {
 
 
 
-//    @Bean
-//    CommandLineRunner init(RoleRepository roleRepository) {
-//
-////        roleRepository.deleteAll();
-////        return (args) -> {
-////           Role adminRole = roleRepository.findByRole("ADMIN");
-////           if(adminRole == null) {
-////               Role newAdminRole = new Role();
-////               newAdminRole.setRole("ADMIN");
-////               roleRepository.save(newAdminRole);
-////           }
-////           Role useRole = roleRepository.findByRole("USER");
-////           if(useRole == null) {
-////               Role newUserRole = new Role();
-////               newUserRole.setRole("User");
-////               roleRepository.save(newUserRole);
-////           }
-////        };
-//
-//    }
+
 }
+

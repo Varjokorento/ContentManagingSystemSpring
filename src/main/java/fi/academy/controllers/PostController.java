@@ -1,5 +1,6 @@
 package fi.academy.controllers;
 
+import fi.academy.helpfunctions.AddPageInformation;
 import fi.academy.helpfunctions.MonthGetter;
 import fi.academy.helpfunctions.TagGetter;
 import fi.academy.models.*;
@@ -31,10 +32,11 @@ public class PostController {
     public String listposts(Model model) {
         Post post = new Post();
         List<Post> popularposts = postRepository.findAllByOrderByClickedDesc(new PageRequest(0, 5));
-        model.addAttribute("addpost", post);
-        model.addAttribute("alltags", TagGetter.findUniqueTags(tagRepository));
-        model.addAttribute("allmonths", MonthGetter.findMonths(postRepository));
-        model.addAttribute("popularposts", popularposts);
+        AddPageInformation.addInformation(tagRepository, postRepository, model, post, popularposts);
+//        model.addAttribute("addpost", post);
+//        model.addAttribute("alltags", TagGetter.findUniqueTags(tagRepository));
+//        model.addAttribute("allmonths", MonthGetter.findMonths(postRepository));
+//        model.addAttribute("popularposts", popularposts);
         return "addpost";
     }
 
@@ -79,16 +81,17 @@ public class PostController {
         postRepository.save(optionalPost.get(0));
         List<Comment> comments = optionalPost.get(0).getComments();
         String id = optionalPost.get(0).getId();
-        model.addAttribute("postid", id);
-        model.addAttribute("showpost", optionalPost);
-        model.addAttribute("popularposts", popularposts);
-        model.addAttribute("alltags", TagGetter.findUniqueTags(tagRepository));
-        model.addAttribute("allmonths", MonthGetter.findMonths(postRepository));
-        Comment comment = new Comment();
-        Comment k = new Comment();
-        model.addAttribute("deletecomment", k);
-        model.addAttribute("addcomment", comment);
-        model.addAttribute("showcomments", comments);
+        AddPageInformation.addInformation(tagRepository, postRepository, model, id, optionalPost, popularposts, comments);
+//        model.addAttribute("postid", id);
+//        model.addAttribute("showpost", optionalPost);
+//        model.addAttribute("popularposts", popularposts);
+//        model.addAttribute("alltags", TagGetter.findUniqueTags(tagRepository));
+//        model.addAttribute("allmonths", MonthGetter.findMonths(postRepository));
+//        Comment comment = new Comment();
+//        Comment k = new Comment();
+//        model.addAttribute("deletecomment", k);
+//        model.addAttribute("addcomment", comment);
+//        model.addAttribute("showcomments", comments);
         return "post";
     }
 
@@ -187,6 +190,7 @@ public class PostController {
             }
         }
         Post posti = new Post();
+
         model.addAttribute("showposts", thatMonthsPosts);
         model.addAttribute("addpost", posti);
         model.addAttribute("tagpost", posti);
@@ -195,6 +199,5 @@ public class PostController {
         model.addAttribute("popularposts", popularposts);
         return "archives";
     }
-
 
 }

@@ -1,5 +1,6 @@
 package fi.academy.controllers;
 
+import fi.academy.helpfunctions.AddPageInformation;
 import fi.academy.helpfunctions.MonthGetter;
 import fi.academy.helpfunctions.TagGetter;
 import fi.academy.models.Comment;
@@ -36,12 +37,13 @@ public class ArchivesController {
         Post post = new Post();
         List<Post> posts = postRepository.findAllByOrderByDateDesc();
         List<Post> popularposts = postRepository.findAllByOrderByClickedDesc(new PageRequest(0, 5));
-        model.addAttribute("showposts", posts);
-        model.addAttribute("addpost", post);
-        model.addAttribute("alltags", TagGetter.findUniqueTags(tagRepository));
-        model.addAttribute("popularposts", popularposts);
-        model.addAttribute("tagpost", post);
-        model.addAttribute("allmonths", MonthGetter.findMonths(postRepository));
+        AddPageInformation.addInformation(tagRepository, postRepository, model, posts, post, popularposts);
+//        model.addAttribute("showposts", posts);
+//        model.addAttribute("addpost", post);
+//        model.addAttribute("alltags", TagGetter.findUniqueTags(tagRepository));
+//        model.addAttribute("popularposts", popularposts);
+//        model.addAttribute("tagpost", post);
+//        model.addAttribute("allmonths", MonthGetter.findMonths(postRepository));
         return "archives";
     }
 
@@ -55,12 +57,13 @@ public class ArchivesController {
         List<Post> posts = new ArrayList<>();
         posts.add(post);
         List<Post> popularposts = postRepository.findAllByOrderByClickedDesc(new PageRequest(0, 5));
-        model.addAttribute("showposts", posts);
-        model.addAttribute("addpost", posti);
-        model.addAttribute("tagpost", posti);
-        model.addAttribute("alltags", TagGetter.findUniqueTags(tagRepository));
-        model.addAttribute("popularposts", popularposts);
-        model.addAttribute("allmonths", MonthGetter.findMonths(postRepository));
+        AddPageInformation.addInformation(tagRepository, postRepository, model, posts, posti, popularposts);
+//        model.addAttribute("showposts", posts);
+//        model.addAttribute("addpost", posti);
+//        model.addAttribute("tagpost", posti);
+//        model.addAttribute("alltags", TagGetter.findUniqueTags(tagRepository));
+//        model.addAttribute("popularposts", popularposts);
+//        model.addAttribute("allmonths", MonthGetter.findMonths(postRepository));
         return "archives";
     }
 
@@ -72,12 +75,13 @@ public class ArchivesController {
             return "redirect:/archives";
         }
         Post posti = new Post();
-        model.addAttribute("showposts", posts);
-        model.addAttribute("addpost", posti);
-        model.addAttribute("tagpost", posti);
-        model.addAttribute("alltags", TagGetter.findUniqueTags(tagRepository));
-        model.addAttribute("allmonths", MonthGetter.findMonths(postRepository));
-        model.addAttribute("popularposts", popularposts);
+        AddPageInformation.addInformation(tagRepository, postRepository, model, posts, posti, popularposts);
+//        model.addAttribute("showposts", posts);
+//        model.addAttribute("addpost", posti);
+//        model.addAttribute("tagpost", posti);
+//        model.addAttribute("alltags", TagGetter.findUniqueTags(tagRepository));
+//        model.addAttribute("allmonths", MonthGetter.findMonths(postRepository));
+//        model.addAttribute("popularposts", popularposts);
         return "archives";
     }
 
@@ -101,12 +105,13 @@ public class ArchivesController {
         posts.add(posti);
         String titteli = post.getTitle();
         String url = "redirect:/archives/" + titteli;
-        model.addAttribute("showposts", posts);
-        model.addAttribute("addpost", posti);
-        model.addAttribute("tagpost", posti);
-        model.addAttribute("alltags", TagGetter.findUniqueTags(tagRepository));
-        model.addAttribute("allmonths", MonthGetter.findMonths(postRepository));
-        model.addAttribute("popularposts", popularposts);
+        AddPageInformation.addInformation(tagRepository, postRepository, model, posts, posti, popularposts);
+//        model.addAttribute("showposts", posts);
+//        model.addAttribute("addpost", posti);
+//        model.addAttribute("tagpost", posti);
+//        model.addAttribute("alltags", TagGetter.findUniqueTags(tagRepository));
+//        model.addAttribute("allmonths", MonthGetter.findMonths(postRepository));
+//        model.addAttribute("popularposts", popularposts);
         return "archives";
 
     }
@@ -132,12 +137,13 @@ public class ArchivesController {
         }
         List<Post> popularposts = postRepository.findAllByOrderByClickedDesc(new PageRequest(0, 5));
         Post posti = new Post();
-        model.addAttribute("showposts", postit);
-        model.addAttribute("addpost", posti);
-        model.addAttribute("alltags", TagGetter.findUniqueTags(tagRepository));
-        model.addAttribute("allmonths", MonthGetter.findMonths(postRepository));
-        model.addAttribute("popularposts", popularposts);
-        model.addAttribute("tagpost", post);
+        AddPageInformation.addInformation(tagRepository, postRepository, model, postit, posti, popularposts);
+//        model.addAttribute("showposts", postit);
+//        model.addAttribute("addpost", posti);
+//        model.addAttribute("alltags", TagGetter.findUniqueTags(tagRepository));
+//        model.addAttribute("allmonths", MonthGetter.findMonths(postRepository));
+//        model.addAttribute("popularposts", popularposts);
+//        model.addAttribute("tagpost", post);
         return "archives";
     }
     }
