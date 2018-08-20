@@ -87,6 +87,8 @@ public class ArchivesController {
         Post posti = new Post();
         try {
             posti = postRepository.findByTitleLike(post.getTitle());
+            System.out.println(posti.getTitle());
+            System.out.println("Meneekö posti @ archives try lohko");
         } catch (Exception e) {
            return "redirect:/archives";
         }
@@ -138,18 +140,5 @@ public class ArchivesController {
         model.addAttribute("tagpost", post);
         return "archives";
     }
-
-//    @GetMapping("/findpost/{title}")
-//    public String postfindbyname(@PathVariable("title") String title, Model model) {
-//        Post post = postRepository.findByTitleLike(title);
-//        Post posti = new Post();
-//        List<Post> posts = new ArrayList<>();
-//        posts.add(post);
-//
-//        model.addAttribute("showpost", posts);
-//        Comment comment = new Comment();
-//        model.addAttribute("addcomment", comment);
-//        return "post";
-//    }
-
-}
+    }
+    

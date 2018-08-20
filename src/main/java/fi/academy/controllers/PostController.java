@@ -27,7 +27,6 @@ public class PostController {
     TagRepository tagRepository;
 
 
-
     @GetMapping("/post")
     public String listposts(Model model) {
         Post post = new Post();
@@ -62,8 +61,8 @@ public class PostController {
         System.out.println(comment.getComment());
         List<Post> optionalPost = postRepository.getPostById(_id);
         List<Comment> kommentit = optionalPost.get(0).getComments();
-        for (int i = 0; i < kommentit.size(); i++ ) {
-            if(kommentit.get(i).getPostedDate().equals(comment.getPostedDate())) {
+        for (int i = 0; i < kommentit.size(); i++) {
+            if (kommentit.get(i).getPostedDate().equals(comment.getPostedDate())) {
                 kommentit.remove(i);
             }
         }
@@ -105,18 +104,17 @@ public class PostController {
 
     // Tästä ei olla satavarmoja, että käyttääkö joku tätä. Poistetaan testauksen jälkeen, jos huomataan, ettei käytä.
 
-//    @GetMapping("/findpost/{title}")
-//    public String postfindbyname(@PathVariable("title") String title, Model model) {
-//        Post post = postRepository.findByTitleLike(title);
-//        Post posti = new Post();
-//        List<Post> posts = new ArrayList<>();
-//        posts.add(post);
-//
-//        model.addAttribute("showpost", posts);
-//        Comment comment = new Comment();
-//        model.addAttribute("addcomment", comment);
-//        return "post";
-//    }
+    @GetMapping("/findpost/{title}")
+    public String postfindbyname(@PathVariable("title") String title, Model model) {
+        Post post = postRepository.findByTitleLike(title);
+        Post posti = new Post();
+        List<Post> posts = new ArrayList<>();
+        posts.add(post);
+        model.addAttribute("showpost", posts);
+        Comment comment = new Comment();
+        model.addAttribute("addcomment", comment);
+        return "post";
+    }
 
     @PostMapping("/post")
     public String createPost(@ModelAttribute("addpost") @RequestBody Post post) {
@@ -129,10 +127,10 @@ public class PostController {
         post.setModifiedDatetoDisplay(post.getDate().toString());
         List<Comment> kommentit = new ArrayList<>();
         String[] splitattu = post.getTags().split("/");
-        List <String> splitted = Arrays.asList(splitattu);
+        List<String> splitted = Arrays.asList(splitattu);
         post.setTagit(splitted);
 
-        for( int i =0; i< splitted.size(); i++) {
+        for (int i = 0; i < splitted.size(); i++) {
             Tag t = new Tag();
             t.setTag(splitted.get(i));
             tagRepository.save(t);
@@ -150,8 +148,7 @@ public class PostController {
         Optional<Post> newPost = postRepository.findById((post.getId()));
         newPost.get().setTitle(post.getTitle());
         newPost.get().setText(post.getText());
-        SimpleDateFormat modified = new SimpleDateFormat("dd-MM-yyyy");
-        newPost.get().setModifiedDatetoDisplay(modified.format(new Date().toString()));
+        newPost.get().setModifiedDatetoDisplay(new Date().toString());
         postRepository.deleteById(post.getId());
         postRepository.save(newPost.get());
         return "redirect:/findpost/" + newPost.get().getTitle();
@@ -177,16 +174,15 @@ public class PostController {
     }
 
 
-
     @GetMapping("/date/{month}")
     public String findByMonth(@PathVariable int month, Model model) {
         System.out.println("Hello date!");
-        List <Post> posts = postRepository.findAll();
+        List<Post> posts = postRepository.findAll();
         System.out.println("Hello date" + posts.get(0).getDate().getMonth());
         List<Post> popularposts = postRepository.findAllByOrderByClickedDesc(new PageRequest(0, 5));
-        List <Post> thatMonthsPosts = new ArrayList<>();
-        for(int i = 0; i < posts.size(); i++) {
-            if(posts.get(i).getDate().getMonth() == month) {
+        List<Post> thatMonthsPosts = new ArrayList<>();
+        for (int i = 0; i < posts.size(); i++) {
+            if (posts.get(i).getDate().getMonth() == month) {
                 thatMonthsPosts.add(posts.get(i));
             }
         }
